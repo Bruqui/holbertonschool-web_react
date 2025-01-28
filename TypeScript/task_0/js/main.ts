@@ -3,44 +3,56 @@ interface Student {
     lastName: string;
     age: number;
     location: string;
-  }
-  
-  const student1: Student = {
-    firstName: "John",
-    lastName: "Doe",
-    age: 20,
-    location: "New York",
-  };
-  
-  const student2: Student = {
-    firstName: "Jane",
-    lastName: "Smith",
-    age: 22,
-    location: "Los Angeles",
-  };
-  
-  const studentsList: Student[] = [student1, student2];
-  
-  
-  const table = document.createElement("table");
-  const tableHeader = table.createTHead();
-  const headerRow = tableHeader.insertRow();
-  const headerFirstName = document.createElement("th");
-  headerFirstName.textContent = "First Name";
-  const headerLocation = document.createElement("th");
-  headerLocation.textContent = "Location";
-  headerRow.appendChild(headerFirstName);
-  headerRow.appendChild(headerLocation);
-  
-  const tableBody = table.createTBody();
-  studentsList.forEach((student) => {
-    const row = tableBody.insertRow();
-    const cellFirstName = row.insertCell();
-    const cellLocation = row.insertCell();
-    cellFirstName.textContent = student.firstName;
-    cellLocation.textContent = student.location;
-  });
-  
-  
+}
+
+const student1: Student = {
+    firstName: "Test1",
+    lastName: "Test1",
+    age: 18,
+    location: "Test1"
+};
+
+const student2: Student = {
+    firstName: "Test2",
+    lastName: "Test2",
+    age: 28,
+    location: "Test2"
+};
+
+const studentsList: Array<Student> = [student1, student2];
+
+function renderTable(): void {
+    const table = document.createElement('table');
+
+    const rowHeader = document.createElement('tr');
+
+    const header1 = document.createElement('th');
+    header1.textContent = "FirstName";
+
+    const header2 = document.createElement('th');
+    header2.textContent = "Location";
+
+    rowHeader.appendChild(header1);
+    rowHeader.appendChild(header2);
+
+    table.appendChild(rowHeader);
+
+    studentsList.forEach((student: Student) => {
+        const row = document.createElement('tr');
+
+        const cell1 = document.createElement('td');
+        cell1.textContent = student.firstName;
+
+        const cell2 = document.createElement('td');
+        cell2.textContent = student.location;
+
+        row.appendChild(cell1);
+        row.appendChild(cell2);
+
+        table.appendChild(row);
+    });
+
   document.body.appendChild(table);
-  
+}
+
+renderTable();
