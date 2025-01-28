@@ -1,28 +1,3 @@
-# Node.js
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# TypeScript
 dist/
-*.tsbuildinfo
-
-# Logs
-logs/
-*.log
-logs/*.log
-
-# Jest
-coverage/
-*.test.ts.snap
-
-# IDEs et éditeurs
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
+package-lock.json
