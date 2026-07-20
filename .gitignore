@@ -2,3 +2,5 @@ node_modules/
 **/dist/main.js
 **/dist/*.LICENSE.txt
 package-lock.json
+Webpack/task_1/public/bundle.js
+Webpack/task_1/public/bundle.js.LICENSE.txt
