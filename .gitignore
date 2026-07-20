@@ -4,3 +4,7 @@ node_modules/
 package-lock.json
 Webpack/task_1/public/bundle.js
 Webpack/task_1/public/bundle.js.LICENSE.txt
+Webpack/task_2/public/bundle.js
+Webpack/task_2/public/bundle.js.LICENSE.txt
+Webpack/task_2/public/*.jpg
+Webpack/task_2/assets/holberton-logo.jpg
