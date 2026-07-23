@@ -41,40 +41,10 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
+        // webpack 5 native asset modules: no file-loader / image-webpack-loader,
+        // so no native binaries to download at install time (reliable on CI).
         test: /\.(gif|png|jpe?g|svg)$/i,
-        type: 'javascript/auto',
-        use: [
-          {
-            loader: 'file-loader',
-            // webpack 5 emits an ES module here by default, which css-loader
-            // stringifies into url([object Module]) instead of the file path.
-            options: {
-              esModule: false,
-            },
-          },
-          {
-            loader: 'image-webpack-loader',
-            options: {
-              mozjpeg: {
-                progressive: true,
-                quality: 65,
-              },
-              optipng: {
-                enabled: false,
-              },
-              pngquant: {
-                quality: [0.65, 0.9],
-                speed: 4,
-              },
-              gifsicle: {
-                interlaced: false,
-              },
-              webp: {
-                quality: 75,
-              },
-            },
-          },
-        ],
+        type: 'asset/resource',
       },
     ],
   },
