@@ -3,13 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://bruqui.github.io/holbertonschool-web_react",
   "scripts": {
     "dev": "vite",
     "start": "vite",
-    "serve": "vite build && vite preview",
+    "serve": "vite preview",
     "build": "vite build",
+    "postbuild": "cp dist/index.html dist/404.html",
     "lint": "eslint .",
-    "preview": "vite build && vite preview",
+    "preview": "vite preview",
     "test": "jest",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
