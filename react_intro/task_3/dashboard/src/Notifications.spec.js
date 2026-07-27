@@ -13,7 +13,7 @@ describe('Notifications', () => {
   test('renders a button element', () => {
     render(<Notifications />)
 
-    expect(screen.getByRole('button')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument()
   })
 
   test('renders 3 li elements', () => {
@@ -25,6 +25,9 @@ describe('Notifications', () => {
   test('logs to the console when the close button is clicked', () => {
     const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
     render(<Notifications />)
+
+    // Nothing is logged until the button is actually hit.
+    expect(consoleSpy).not.toHaveBeenCalled()
 
     fireEvent.click(screen.getByRole('button', { name: /close/i }))
 
