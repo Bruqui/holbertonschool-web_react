@@ -19,3 +19,4 @@ Introduction to React: building the Holberton *School dashboard* application wit
 | 2. Embedding expressions, functions | [task_1](task_1) | Extract `utils.js`, add the `Notifications` child component and its styles |
 | 3. Modify the App | [task_2](task_2) | Add the email / password login form and its `OK` button |
 | 4. Test the sign in form | [task_2](task_2) | Cover the two inputs, the two labels and the `OK` button |
+| 5. Update the Notifications | [task_2](task_2) | Add the close button, the notification list and its priority styles |
