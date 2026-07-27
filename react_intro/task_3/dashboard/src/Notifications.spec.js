@@ -26,11 +26,11 @@ describe('Notifications', () => {
     const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
     render(<Notifications />)
 
-    fireEvent.click(screen.getByRole('button'))
+    fireEvent.click(screen.getByRole('button', { name: /close/i }))
 
-    expect(consoleSpy).toHaveBeenCalledWith(
-      expect.stringMatching(/close button has been clicked/i)
-    )
+    // Exact string on purpose: this assertion has to catch a handler that logs
+    // anything else, so it must not be loosened to a case-insensitive match.
+    expect(consoleSpy).toHaveBeenCalledWith('Close button has been clicked')
 
     consoleSpy.mockRestore()
   })

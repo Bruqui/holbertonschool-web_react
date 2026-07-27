@@ -20,8 +20,11 @@ utilitaires et du composant `Notifications`.
 [dashboard/src/Notifications.spec.js](dashboard/src/Notifications.spec.js) couvre
 [dashboard/src/Notifications.jsx](dashboard/src/Notifications.jsx) : le titre du panneau, la
 présence du bouton, les trois `li` de la liste, et le journal `Close button has been clicked`
-émis au clic — simulé avec l'API `fireEvent`. Toutes les correspondances sont insensibles à la
-casse, y compris celle du message journalisé.
+émis au clic — simulé avec l'API `fireEvent`.
+
+Les requêtes de texte sont insensibles à la casse. Le message journalisé fait exception : il est
+comparé à la chaîne exacte, car cette assertion doit précisément échouer face à un gestionnaire
+`onClick` qui journaliserait autre chose.
 
 ## Usage
 
