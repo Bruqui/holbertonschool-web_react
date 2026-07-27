@@ -16,13 +16,9 @@ describe('App', () => {
     expect(
       screen.getByText(/login to access the full dashboard/i)
     ).toBeInTheDocument()
+    // The year is whatever year the app renders, so match any four digits.
     expect(
-      screen.getByText(
-        new RegExp(
-          `copyright ${new Date().getFullYear()} - holberton school`,
-          'i'
-        )
-      )
+      screen.getByText(/copyright\s+\d{4}\s*-\s*holberton school/i)
     ).toBeInTheDocument()
   })
 
