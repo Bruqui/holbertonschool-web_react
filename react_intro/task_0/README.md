@@ -13,6 +13,10 @@ Jest is configured at the end of [dashboard/package.json](dashboard/package.json
 [dashboard/fileTransformer.js](dashboard/fileTransformer.js) stubbing image imports and
 [dashboard/setupTests.js](dashboard/setupTests.js) loading `@testing-library/jest-dom`.
 
+[dashboard/src/App.spec.js](dashboard/src/App.spec.js) covers the rendered heading, the two
+paragraphs and the logo, querying by role, text and `alt` attribute so the assertions stay
+independent of the markup structure.
+
 ## Usage
 
 ```bash
