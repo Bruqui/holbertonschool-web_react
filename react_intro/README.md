@@ -21,3 +21,4 @@ Introduction to React: building the Holberton *School dashboard* application wit
 | 4. Test the sign in form | [task_2](task_2) | Cover the two inputs, the two labels and the `OK` button |
 | 5. Update the Notifications | [task_2](task_2) | Add the close button, the notification list and its priority styles |
 | 6. Utils tests | [task_3](task_3) | Cover `getCurrentYear`, `getFooterCopy` and `getLatestNotification` |
+| 7. Test the notifications list | [task_3](task_3) | Cover the title, the button, the 3 list items and the close click |

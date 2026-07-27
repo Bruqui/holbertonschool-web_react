@@ -1,8 +1,9 @@
-# Task 6. Utils tests
+# Tasks 6 et 7. Tests
 
-Reprise du `dashboard` de la tâche précédente, avec la suite de tests des fonctions utilitaires.
+Reprise du `dashboard` de la tâche précédente, avec les suites de tests des fonctions
+utilitaires et du composant `Notifications`.
 
-## Ajouts
+## Task 6. Utils tests
 
 [dashboard/src/utils.spec.js](dashboard/src/utils.spec.js) couvre les trois fonctions de
 [dashboard/src/utils.js](dashboard/src/utils.js) :
@@ -13,6 +14,14 @@ Reprise du `dashboard` de la tâche précédente, avec la suite de tests des fon
   l'implémentation).
 - `getFooterCopy(isIndex)` — les deux branches, `true` et `false`.
 - `getLatestNotification()` — la chaîne HTML attendue.
+
+## Task 7. Test the notifications list
+
+[dashboard/src/Notifications.spec.js](dashboard/src/Notifications.spec.js) couvre
+[dashboard/src/Notifications.jsx](dashboard/src/Notifications.jsx) : le titre du panneau, la
+présence du bouton, les trois `li` de la liste, et le journal `Close button has been clicked`
+émis au clic — simulé avec l'API `fireEvent`. Toutes les correspondances sont insensibles à la
+casse, y compris celle du message journalisé.
 
 ## Usage
 
