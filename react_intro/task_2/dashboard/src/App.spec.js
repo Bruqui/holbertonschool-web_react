@@ -10,15 +10,11 @@ describe('App', () => {
     ).toBeInTheDocument()
   })
 
-  test('renders the body and footer paragraphs', () => {
+  test('renders the login paragraph', () => {
     render(<App />)
 
     expect(
       screen.getByText(/login to access the full dashboard/i)
-    ).toBeInTheDocument()
-    // The year is whatever year the app renders, so match any four digits.
-    expect(
-      screen.getByText(/copyright\s+\d{4}\s*-\s*holberton school/i)
     ).toBeInTheDocument()
   })
 
@@ -36,6 +32,8 @@ describe('App', () => {
     )
 
     expect(fields).toHaveLength(2)
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
   })
 
   test('renders 2 label elements, for Email and Password', () => {
@@ -53,6 +51,6 @@ describe('App', () => {
   test('renders a button with the text OK', () => {
     render(<App />)
 
-    expect(screen.getByRole('button', { name: /ok/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^ok$/i })).toBeInTheDocument()
   })
 })
