@@ -6,10 +6,10 @@
   "scripts": {
     "dev": "vite",
     "start": "vite",
-    "serve": "vite preview",
+    "serve": "vite build && vite preview",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
+    "preview": "vite build && vite preview",
     "test": "jest",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
