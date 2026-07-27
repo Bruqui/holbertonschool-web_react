@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // The site is served from https://bruqui.github.io/holbertonschool-web_react/,
-  // so assets must resolve from that sub-path rather than the domain root.
-  base: '/holbertonschool-web_react/',
+  // Relative asset paths, so the same build works both under the GitHub Pages
+  // sub-path (/holbertonschool-web_react/) and when served from a local root.
+  base: './',
 })
