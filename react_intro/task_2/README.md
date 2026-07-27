@@ -14,6 +14,10 @@ Dans le `div.App-body` de [dashboard/src/App.jsx](dashboard/src/App.jsx), sous l
 Chaque `label` est relié à son champ par `htmlFor` / `id`, de sorte qu'un clic sur le libellé
 donne le focus au champ correspondant.
 
+[dashboard/src/App.spec.js](dashboard/src/App.spec.js) complète la suite de la tâche 1 : deux
+champs de saisie, deux libellés `Email` et `Password`, et le bouton `OK`. Les assertions sont
+insensibles à la casse et indépendantes de l'ordre des champs.
+
 ## Usage
 
 ```bash
