@@ -1,0 +1,12 @@
+node_modules/
+**/dist/main.js
+**/dist/*.LICENSE.txt
+package-lock.json
+# Le checker react_intro doit pouvoir installer les dépendances avant de lancer Jest.
+!react_intro/**/package-lock.json
+Webpack/task_1/public/bundle.js
+Webpack/task_1/public/bundle.js.LICENSE.txt
+Webpack/task_2/public/bundle.js
+Webpack/task_2/public/bundle.js.LICENSE.txt
+Webpack/task_2/public/*.jpg
+Webpack/task_3/public/
