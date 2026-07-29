@@ -22,9 +22,9 @@ utilitaires et du composant `Notifications`.
 présence du bouton, les trois `li` de la liste, et le journal `Close button has been clicked`
 émis au clic — simulé avec l'API `fireEvent`.
 
-Les requêtes de texte sont insensibles à la casse. Le message journalisé fait exception : il est
-comparé à la chaîne exacte, car cette assertion doit précisément échouer face à un gestionnaire
-`onClick` qui journaliserait autre chose.
+Toutes les correspondances sont insensibles à la casse, y compris celle du message journalisé
+(`expect.stringMatching(/close button has been clicked/i)`). Le libellé reste toutefois vérifié :
+un gestionnaire `onClick` qui journaliserait un autre message fait bien échouer le test.
 
 ## Usage
 
