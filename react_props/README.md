@@ -6,6 +6,7 @@ paramétré par des `props`.
 | Tâche | Sujet |
 | --- | --- |
 | [task_0](task_0) | Basic components — extraction de `Header`, `Login` et `Footer` depuis `App` |
+| [task_1](task_1) | Write the tests for each component — tests unitaires de `Header`, `Login` et `Footer` |
 
 ## Prérequis
 
