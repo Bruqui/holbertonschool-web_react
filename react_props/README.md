@@ -9,6 +9,7 @@ paramétré par des `props`.
 | [task_1](task_1) | Write the tests for each component — tests unitaires de `Header`, `Login` et `Footer` |
 | [task_2](task_2) | Separation of Concerns — `notificationsList` dans `App`, nouveau `NotificationItem` |
 | [task_3](task_3) | Devtool React extension — captures Components et Profiler |
+| [task_4](task_4) | CourseList & CourseListRow — bascule `isLoggedIn` entre `Login` et `CourseList` |
 
 ## Prérequis
 
