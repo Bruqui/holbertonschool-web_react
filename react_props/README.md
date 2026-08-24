@@ -10,6 +10,7 @@ paramétré par des `props`.
 | [task_2](task_2) | Separation of Concerns — `notificationsList` dans `App`, nouveau `NotificationItem` |
 | [task_3](task_3) | Devtool React extension — captures Components et Profiler |
 | [task_4](task_4) | CourseList & CourseListRow — bascule `isLoggedIn` entre `Login` et `CourseList` |
+| [task_5](task_5) | Enhance Notifications component — tiroir `displayDrawer` et état vide |
 
 ## Prérequis
 
