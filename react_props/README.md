@@ -7,6 +7,7 @@ paramétré par des `props`.
 | --- | --- |
 | [task_0](task_0) | Basic components — extraction de `Header`, `Login` et `Footer` depuis `App` |
 | [task_1](task_1) | Write the tests for each component — tests unitaires de `Header`, `Login` et `Footer` |
+| [task_2](task_2) | Separation of Concerns — `notificationsList` dans `App`, nouveau `NotificationItem` |
 
 ## Prérequis
 
