@@ -1,0 +1,23 @@
+# React component
+
+Suite du projet `react_props`. Le dashboard passe des composants fonctionnels aux **composants de
+classe**, puis exploite leur cycle de vie et leur état.
+
+| Tâche | Sujet |
+| --- | --- |
+| [task_0](task_0) | Switch to class components — `App` devient une classe React |
+
+## Prérequis
+
+- Node 20.x, npm 10.x
+- Jest 29.7.0
+
+## Usage
+
+```bash
+cd task_0/dashboard
+npm install
+npm run dev     # serveur de développement Vite
+npm test        # Jest
+npm run lint    # ESLint
+```

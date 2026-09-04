@@ -5,6 +5,7 @@ package-lock.json
 # Les checkers React doivent pouvoir installer les dépendances avant de lancer Jest.
 !react_intro/**/package-lock.json
 !react_props/**/package-lock.json
+!react_component/**/package-lock.json
 Webpack/task_1/public/bundle.js
 Webpack/task_1/public/bundle.js.LICENSE.txt
 Webpack/task_2/public/bundle.js
