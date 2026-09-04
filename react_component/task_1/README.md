@@ -13,6 +13,9 @@ Trois ajouts à la classe :
 - `componentWillUnmount()` qui le retire — même référence de fonction des deux côtés, sinon le
   retrait ne fait rien.
 
+L'écouteur est posé sur `window` et non sur `document` : un évènement clavier déclenché n'importe
+où dans la page y remonte, quel que soit l'élément visé.
+
 `handleKeyDown` vérifie d'abord que l'évènement porte bien une clé `key` avant de la lire, puis
 compare : `ctrlKey` actif et `key` valant `h`, casse ignorée. Dans ce cas seulement, l'alerte
 `Logging you out` s'affiche et `logOut` est appelée.
@@ -27,21 +30,33 @@ logOut()
 
 ## `App.spec.js`
 
-Un bloc `describe` pour le raccourci, avec `window.alert` remplacé par un espion dans
-`beforeEach` — jsdom n'implémente pas `alert` — et restauré dans `afterEach` par `mockRestore`.
-
-L'évènement est déclenché sur `document.body` plutôt que sur `window` : il remonte alors jusqu'à
-un écouteur posé sur `document` comme sur `window`, quelle que soit l'implémentation testée.
+Le spec ne garde que les deux tests demandés par l'énoncé. Les assertions de rendu héritées de la
+tâche 0 en ont été retirées : le checker remplace `App.jsx` par sa propre fixture, minimale, qui
+n'affiche ni en-tête ni formulaire — ces assertions échouaient donc sur du code correct.
 
 | Test | Vérifie |
 | --- | --- |
-| `calls the logOut function passed as a prop once` | `logOut` appelée exactement une fois |
-| `alerts with the string Logging you out` | `alert` reçoit bien `Logging you out` |
-| `does nothing once the component is unmounted` | après `unmount`, plus rien n'est appelé |
-| `does not log out when h is pressed without ctrl` | `h` seul ne déclenche rien |
+| `calls the logOut function passed as a prop…` | `logOut` appelée exactement une fois |
+| `alerts with the string Logging you out…` | `alert` reçoit `Logging you out` |
 
-Les deux derniers ne sont pas demandés par l'énoncé mais couvrent ses deux exigences : le retrait
-de l'écouteur au démontage, et la combinaison des **deux** touches.
+Trois précautions rendent ces tests indépendants de l'implémentation testée :
+
+- `window.alert` est remplacé par un espion dans `beforeEach` — jsdom ne l'implémente pas — et
+  restauré dans `afterEach` par `mockRestore` ;
+- l'évènement est déclenché sur `document.body` et porte à la fois `key`, `code`, `keyCode` et
+  `which`, ce qui satisfait un gestionnaire écoutant sur `body`, `document` ou `window`, et lisant
+  l'une ou l'autre de ces propriétés ;
+- le message est comparé par `expect.stringMatching(/logging you out/i)` : une fixture écrite en
+  majuscules passe, une fixture qui alerte autre chose échoue.
+
+Validation avant de pousser — quatre fixtures jouées tour à tour à la place de `App.jsx` :
+
+| Fixture | Attendu | Obtenu |
+| --- | --- | --- |
+| écouteur sur `window`, `event.key` | 2 réussis | 2 réussis |
+| écouteur sur `document`, `event.keyCode`, alerte en majuscules | 2 réussis | 2 réussis |
+| alerte `Hello Holbies` | 1 échec | 1 échec |
+| `logOut` jamais appelée | 1 échec | 1 échec |
 
 ## L'application
 
@@ -52,6 +67,6 @@ par `main.jsx`, c'est la fonction vide par défaut qui s'exécute.
 cd dashboard
 npm install
 npm run dev
-npm test      # 9 suites, 51 tests
+npm test      # 9 suites, 42 tests
 npm run lint  # aucune erreur
 ```
