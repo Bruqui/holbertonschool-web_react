@@ -28,6 +28,41 @@ describe('App', () => {
     expect(screen.getByAltText(/holberton logo/i)).toBeInTheDocument()
   })
 
+  test('renders the News from the School section by default', () => {
+    render(<App />)
+
+    expect(
+      screen.getByRole('heading', { name: /news from the school/i })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText(/holberton school news goes here/i)
+    ).toBeInTheDocument()
+  })
+
+  test('wraps the Login form in a body section titled Log in to continue', () => {
+    const { container } = render(<App isLoggedIn={false} />)
+
+    expect(
+      screen.getByRole('heading', { name: /log in to continue/i })
+    ).toBeInTheDocument()
+    expect(
+      container.querySelectorAll('.bodySectionWithMargin')
+    ).not.toHaveLength(0)
+  })
+
+  test('wraps the CourseList in a body section titled Course list', () => {
+    const { container } = render(<App isLoggedIn />)
+
+    expect(
+      screen.getByRole('heading', { name: /course list/i })
+    ).toBeInTheDocument()
+    // The section holding the table is the one carrying the bottom margin.
+    const wrapper = container
+      .querySelector('#CourseList')
+      .closest('.bodySectionWithMargin')
+    expect(wrapper).toBeInTheDocument()
+  })
+
   test('renders the Login form when isLoggedIn is false', () => {
     const { container } = render(<App isLoggedIn={false} />)
 

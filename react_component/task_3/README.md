@@ -55,7 +55,23 @@ compris, donc le composant reste lui aussi agnostique.
 | `renders the BodySection component inside that div` | `.bodySection` imbriqué dedans |
 | `hands the title and the children down to it` | le titre et l'enfant arrivent bien en bas |
 
-Ces composants ne sont pas encore utilisés par `App` : l'énoncé demande seulement de les créer.
+## Tâche 4 — Use the new components
+
+La tâche suivante de l'énoncé se joue dans ce même dossier. `App` branche les deux composants :
+
+- `CourseList` est enveloppé par un `BodySectionWithMarginBottom` titré `Course list` ;
+- `Login` par un autre, titré `Log in to continue` ;
+- un `BodySection` titré `News from the School` ferme le corps de page, avec un paragraphe
+  `Holberton School News goes here`.
+
+Le bloc d'actualités est en dehors du ternaire `isLoggedIn` : il s'affiche dans les deux états.
+
+Trois tests s'ajoutent à `App.spec.js` : le bloc d'actualités par défaut, puis chacune des deux
+enveloppes. Le titre est cherché par `getByRole('heading', { name: /…/i })` sans préciser le
+niveau, et les textes par des regex insensibles à la casse.
+
+Le style est vérifié jusqu'au bout : après `npx vite build`, le CSS produit contient bien
+`.bodySectionWithMargin{margin-bottom:40px}`.
 
 Validation avant de pousser — implémentations de substitution jouées à leur place :
 
@@ -74,6 +90,6 @@ Le rendu ne change pas.
 cd dashboard
 npm install
 npm run dev
-npm test      # 11 suites, 57 tests
+npm test      # 11 suites, 60 tests
 npm run lint  # aucune erreur
 ```
