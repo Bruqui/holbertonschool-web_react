@@ -43,18 +43,26 @@ Trois précautions rendent ces tests indépendants de l'implémentation testée 
 
 - `window.alert` est remplacé par un espion dans `beforeEach` — jsdom ne l'implémente pas — et
   restauré dans `afterEach` par `mockRestore` ;
-- l'évènement est déclenché sur `document.body` et porte à la fois `key`, `code`, `keyCode` et
-  `which`, ce qui satisfait un gestionnaire écoutant sur `body`, `document` ou `window`, et lisant
-  l'une ou l'autre de ces propriétés ;
+- la frappe part de `userEvent`, qui joue la séquence complète — `Control` enfoncée, `h` pressée
+  puis relâchée, `Control` relâchée. Un composant qui suit la touche `Control` elle-même, au lieu
+  de lire `event.ctrlKey`, y réagit comme les autres ;
 - le message est comparé par `expect.stringMatching(/logging you out/i)` : une fixture écrite en
   majuscules passe, une fixture qui alerte autre chose échoue.
 
-Validation avant de pousser — quatre fixtures jouées tour à tour à la place de `App.jsx` :
+`userEvent` ne renseigne pas `keyCode`, déprécié mais encore lu par certaines implémentations.
+Deux `fireEvent` de secours, un `keydown` puis un `keyup` portant `key`, `code`, `keyCode` et
+`which`, sont donc joués **après** la séquence — et uniquement tant que rien n'a réagi, ce qui
+évite de déclencher deux fois le gestionnaire d'un composant qui a déjà répondu.
+
+Validation avant de pousser — sept fixtures jouées tour à tour à la place de `App.jsx` :
 
 | Fixture | Attendu | Obtenu |
 | --- | --- | --- |
 | écouteur sur `window`, `event.key` | 2 réussis | 2 réussis |
 | écouteur sur `document`, `event.keyCode`, alerte en majuscules | 2 réussis | 2 réussis |
+| suivi de la touche `Control` en champ d'instance | 2 réussis | 2 réussis |
+| écouteur sur `keyup` au lieu de `keydown` | 2 réussis | 2 réussis |
+| `logOut` par `defaultProps` | 2 réussis | 2 réussis |
 | alerte `Hello Holbies` | 1 échec | 1 échec |
 | `logOut` jamais appelée | 1 échec | 1 échec |
 

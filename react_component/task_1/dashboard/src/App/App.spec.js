@@ -1,4 +1,5 @@
 import { fireEvent, render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import App from './App'
 
 describe('App', () => {
@@ -13,29 +14,38 @@ describe('App', () => {
     alertSpy.mockRestore()
   })
 
-  // Dispatched on the body so it bubbles up to a listener on body, document or window.
-  const pressCtrlH = () =>
-    fireEvent.keyDown(document.body, {
-      key: 'h',
-      code: 'KeyH',
-      keyCode: 72,
-      which: 72,
-      ctrlKey: true,
-    })
+  // Control held down, h pressed and released, control released — a real key sequence.
+  // Each fallback below runs only while nothing has reacted yet, so the handler of a
+  // component that does react is never triggered twice.
+  const pressCtrlH = async (logOut) => {
+    const reacted = () =>
+      alertSpy.mock.calls.length > 0 || logOut.mock.calls.length > 0
 
-  test('calls the logOut function passed as a prop when ctrl and h are pressed', () => {
+    await userEvent.setup().keyboard('{Control>}h{/Control}')
+    if (reacted()) return
+
+    // userEvent leaves the deprecated keyCode unset, so a handler reading it needs this.
+    const init = { key: 'h', code: 'KeyH', keyCode: 72, which: 72, ctrlKey: true }
+    fireEvent.keyDown(document.body, init)
+    if (reacted()) return
+
+    fireEvent.keyUp(document.body, init)
+  }
+
+  test('calls the logOut function passed as a prop when ctrl and h are pressed', async () => {
     const logOut = jest.fn()
     render(<App logOut={logOut} />)
 
-    pressCtrlH()
+    await pressCtrlH(logOut)
 
     expect(logOut).toHaveBeenCalledTimes(1)
   })
 
-  test('alerts with the string Logging you out when ctrl and h are pressed', () => {
-    render(<App logOut={() => {}} />)
+  test('alerts with the string Logging you out when ctrl and h are pressed', async () => {
+    const logOut = jest.fn()
+    render(<App logOut={logOut} />)
 
-    pressCtrlH()
+    await pressCtrlH(logOut)
 
     expect(alertSpy).toHaveBeenCalledWith(
       expect.stringMatching(/logging you out/i)
