@@ -156,6 +156,41 @@ describe('Notifications', () => {
     })
   })
 
+  describe('when the notifications prop is replaced', () => {
+    test('keeps its rendered list when the new one has the same length', () => {
+      const { rerender } = render(
+        <Notifications displayDrawer notifications={notificationsList} />
+      )
+      const sameLength = [
+        { id: 1, type: 'default', value: 'Updated course' },
+        { id: 2, type: 'urgent', value: 'Updated resume' },
+        { id: 3, type: 'urgent', value: 'Updated requirement' },
+      ]
+
+      rerender(<Notifications displayDrawer notifications={sameLength} />)
+
+      expect(screen.queryByText(/updated course/i)).not.toBeInTheDocument()
+      expect(screen.getByText(/new course available/i)).toBeInTheDocument()
+    })
+
+    test('renders the new list when its length changed', () => {
+      const { container, rerender } = render(
+        <Notifications displayDrawer notifications={notificationsList} />
+      )
+      const longerList = [
+        ...notificationsList,
+        { id: 4, type: 'default', value: 'New internship available' },
+      ]
+
+      rerender(<Notifications displayDrawer notifications={longerList} />)
+
+      expect(
+        screen.getByText(/new internship available/i)
+      ).toBeInTheDocument()
+      expect(container.querySelectorAll('li')).toHaveLength(4)
+    })
+  })
+
   describe('when displayDrawer is true and notifications is empty', () => {
     test('renders the text No new notification for now', () => {
       render(<Notifications displayDrawer notifications={[]} />)

@@ -43,6 +43,33 @@ Vérification dans les deux sens :
 | `PureComponent` | tout passe | 25 réussis |
 | `Component` | un échec | 1 échec |
 
+## Tâche 7 — Make your own pure component
+
+La tâche suivante se joue dans ce même dossier. `Notifications` ne peut pas simplement devenir un
+`PureComponent` : sa prop `notifications` est un tableau reconstruit à chaque rendu du parent, donc
+la comparaison superficielle échouerait toujours. La condition est donc écrite à la main :
+
+```jsx
+shouldComponentUpdate(nextProps) {
+  return nextProps.notifications.length !== this.props.notifications.length
+}
+```
+
+Le composant ne se met à jour que si le **nombre** de notifications change, comme demandé. À
+noter : cette règle bloque aussi une bascule de `displayDrawer` seule. C'est bien ce que dit
+l'énoncé, et `App` ne fait pas varier cette prop.
+
+Deux tests s'ajoutent à `Notifications.spec.js`, écrits sur le contenu réellement affiché plutôt
+que sur un compteur de rendus :
+
+| Test | Vérifie |
+| --- | --- |
+| `keeps its rendered list when the new one has the same length` | une liste de trois autres notifications ne remplace pas l'affichage |
+| `renders the new list when its length changed` | une quatrième notification apparaît bien |
+
+Vérification dans les deux sens : sans `shouldComponentUpdate`, le premier test échoue ; avec, les
+27 tests du dossier `Notifications` passent.
+
 ## L'application
 
 Le rendu ne change pas.
@@ -51,6 +78,6 @@ Le rendu ne change pas.
 cd dashboard
 npm install
 npm run dev
-npm test      # 12 suites, 67 tests
+npm test      # 12 suites, 69 tests
 npm run lint  # aucune erreur
 ```
