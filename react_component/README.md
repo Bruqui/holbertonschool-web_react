@@ -6,6 +6,7 @@ classe**, puis exploite leur cycle de vie et leur état.
 | Tâche | Sujet |
 | --- | --- |
 | [task_0](task_0) | Switch to class components — `App` devient une classe React |
+| [task_1](task_1) | Lifecycles — raccourci `Ctrl` + `h` monté et démonté avec `App` |
 
 ## Prérequis
 
