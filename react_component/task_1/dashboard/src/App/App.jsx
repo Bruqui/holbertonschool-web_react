@@ -26,27 +26,26 @@ class App extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown)
+    document.addEventListener('keydown', this.handleKeyDown)
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown)
+    document.removeEventListener('keydown', this.handleKeyDown)
   }
 
   handleKeyDown(event) {
-    // A synthetic event may carry no key at all, hence the guard before reading it.
-    if (!event || !('key' in event)) return
+    // A synthetic event may carry neither key, hence the checks before reading them.
+    const hasCtrlKey = 'ctrlKey' in event && event.ctrlKey
+    const key = 'key' in event ? String(event.key) : ''
 
-    if (event.ctrlKey && String(event.key).toLowerCase() === 'h') {
-      alert('Logging you out')
-
-      const { logOut = () => {} } = this.props
-      logOut()
+    if (hasCtrlKey && key.toLowerCase() === 'h') {
+      window.alert('Logging you out')
+      this.props.logOut()
     }
   }
 
   render() {
-    const { isLoggedIn = false } = this.props
+    const { isLoggedIn } = this.props
 
     return (
       <Fragment>
@@ -61,6 +60,11 @@ class App extends Component {
       </Fragment>
     )
   }
+}
+
+App.defaultProps = {
+  isLoggedIn: false,
+  logOut: () => {},
 }
 
 export default App
