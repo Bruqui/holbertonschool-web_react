@@ -10,6 +10,7 @@ classe**, puis exploite leur cycle de vie et leur état.
 | [task_2](task_2) | Handling Events — `markAsRead` au clic sur une notification |
 | [task_3](task_3) | Reusable comments & specialization, puis Use the new components — `BodySection`, sa spécialisation, et leur branchement dans `App` |
 | [task_4](task_4) | High Order Component — `WithLogging` autour de `Login` et `CourseList` |
+| [task_5](task_5) | Declare a pure component — `NotificationItem` devient `PureComponent` |
 
 ## Prérequis
 
