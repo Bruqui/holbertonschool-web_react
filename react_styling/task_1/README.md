@@ -59,6 +59,27 @@ Les deux états ne sont plus deux `return` distincts mais une seule structure, a
 et table vide : même conteneur, mêmes classes, même largeur — il n'y a plus deux arbres à garder
 synchronisés.
 
+## `main.jsx` : rendre la table visible
+
+Le « Reminder » de l'énoncé n'est pas une remarque en passant, c'est une condition pour que la
+tâche soit testable.
+
+`isLoggedIn` est une **prop** de `App`, avec `false` en valeur par défaut, et rien dans
+l'application ne la fait basculer — le bouton `OK` du formulaire ne porte aucun gestionnaire à ce
+stade du cursus. `main.jsx` rendait `<App />` : l'app servie affichait donc toujours le
+formulaire de connexion, et `#CourseList` n'apparaissait **jamais** dans le DOM.
+
+Conséquence pour les tests de bout en bout : ils n'échouaient pas sur une assertion, ils
+**expiraient** en attendant un sélecteur qui ne viendrait pas. D'où le `return code 124` et une
+sortie vide, alors que le style lui-même était correct.
+
+```jsx
+<App isLoggedIn={true} />
+```
+
+Les tests RTL ne sont pas concernés : ils rendent `App` directement avec leurs propres props et
+ne passent pas par `main.jsx`.
+
 ## Vérification
 
 Mesuré dans un Chrome headless, sur les deux états :

@@ -8,6 +8,8 @@ import App from './App/App.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    {/* isLoggedIn à true : c'est la table des cours qu'on veut afficher ici,
+        pas le formulaire de connexion. */}
+    <App isLoggedIn={true} />
   </StrictMode>,
 )
