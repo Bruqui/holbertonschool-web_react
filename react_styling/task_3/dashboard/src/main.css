@@ -19,16 +19,19 @@
     background-color: #ffffff;
   }
 
-  /* Le pied de page doit rester collé au bas de la fenêtre quelle que soit la
-     hauteur du contenu : la racine est une colonne flex d'au moins un écran,
-     et le Footer porte `mt-auto`. */
+  /* Conteneur de mise en page : c'est lui qui donne la marge latérale de 12px
+     à toute la page, et la colonne flex d'au moins un écran qui permet au
+     Footer de rester collé en bas. `relative` sert d'ancrage au panneau de
+     notifications, positionné en absolu. */
   #root {
+    position: relative;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    padding: 0 12px;
   }
 
   .App-body {
-    padding: 40px 20px;
+    padding-top: 38px;
   }
 }

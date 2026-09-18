@@ -5,7 +5,7 @@ class BodySectionWithMarginBottom extends Component {
   render() {
     // Every prop is handed down, children included, so the wrapper stays agnostic.
     return (
-      <div className="bodySectionWithMargin mb-10">
+      <div className="bodySectionWithMargin">
         <BodySection {...this.props} />
       </div>
     )

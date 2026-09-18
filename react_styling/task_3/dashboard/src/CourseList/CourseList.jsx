@@ -7,7 +7,7 @@ function CourseList({ courses = [] }) {
   // Une seule structure pour les deux états : la table vide et la table remplie
   // partagent donc exactement le même conteneur et les mêmes classes.
   return (
-    <div className="w-4/5 mx-auto my-4">
+    <div className="w-4/5 mx-auto my-32">
       <table id="CourseList" className="w-full border-collapse">
         <thead>
           {isEmpty ? (

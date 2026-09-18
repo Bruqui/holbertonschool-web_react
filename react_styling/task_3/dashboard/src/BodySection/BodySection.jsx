@@ -8,7 +8,7 @@ class BodySection extends Component {
       <div className="bodySection">
         {/* Comme pour le h1 du Header, le preflight impose de redonner au
             titre sa taille et sa graisse. */}
-        <h2 className="text-2xl font-bold mb-4">{title}</h2>
+        <h2 className="text-xl font-bold">{title}</h2>
         {children}
       </div>
     )

@@ -4,8 +4,8 @@ function Footer() {
   return (
     // `mt-auto` colle le pied de page au bas de la colonne flex ouverte par
     // `#root`, quelle que soit la hauteur du contenu.
-    <div className="App-footer mt-auto border-t-[3px] border-(--main-color) p-5 text-center">
-      <p className="italic">
+    <div className="App-footer mt-auto border-t-4 border-(--main-color) p-4 text-center">
+      <p className="text-xl italic">
         Copyright {getCurrentYear()} - {getFooterCopy(true)}
       </p>
     </div>

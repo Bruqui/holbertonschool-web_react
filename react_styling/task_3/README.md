@@ -12,56 +12,50 @@ yeux :
 
 | Élément | Remis à zéro par le preflight | Classe de compensation |
 | --- | --- | --- |
-| `h1`, `h2` | `font-size: inherit`, `font-weight: inherit` | `text-[2rem] font-bold`, `text-2xl font-bold` |
-| `ul` | ni puce ni retrait | `list-disc pl-6` (tâche 2) |
-| `input`, `button` | `border-width: 0` | `border border-gray-400 rounded` |
+| `h1`, `h2` | `font-size: inherit`, `font-weight: inherit` | `text-5xl font-bold`, `text-xl font-bold` |
+| `ul` | ni puce ni retrait | `list-[square] pl-6` |
+| `input`, `button` | `border-width: 0` | `border border-black rounded-xs` |
 
 Autrement dit, « convertir le CSS en classes Tailwind » demande aussi de **rendre explicite ce
 qui était implicite**. Les titres de section apparaissaient en texte courant de 16px depuis la
-tâche 0 ; ils retrouvent ici leur taille.
+tâche 0 ; ils retrouvent ici leur taille. Les champs du formulaire, eux, étaient carrément
+invisibles.
 
-## `Header.jsx`
-
-```jsx
-<div className="App-header flex items-center gap-5 px-5 py-2.5 border-b-[3px] border-(--main-color)">
-  <img ... className="w-50" />
-  <h1 className="text-[2rem] font-bold text-(--main-color)">
-```
-
-`w-50` vaut bien 200px (`50 × 0.25rem`). `border-b-[3px]` est une valeur arbitraire parce que
-l'échelle de Tailwind s'arrête à `border-b-2` puis `border-b-4`.
-
-## `Login.jsx`
-
-- `border-t-[3px] border-(--main-color)` pour la bordure haute
-- le formulaire devient une rangée flex : `flex flex-wrap items-center`, qui repasse à la ligne
-  sur les petits écrans
-- `mr-2` sur les `label`, `mr-5` sur les `input` — les marges de l'ancien CSS
-- `p` : `text-[1.1rem] mb-6.25` (25px)
-- les champs et le bouton retrouvent une bordure visible, que le preflight avait supprimée
-
-## `BodySection.jsx` et `BodySectionWithMarginBottom.jsx`
-
-Le titre passe en `text-2xl font-bold mb-4`, le conteneur à marge en `mb-10` (40px).
-Aucun `<p>` n'est ajouté : `BodySection.spec.js` compte les paragraphes rendus et attend
-exactement ceux des `children`.
-
-## `Footer.jsx` et le pied de page collé en bas
+## Les composants
 
 ```jsx
-<div className="App-footer mt-auto border-t-[3px] border-(--main-color) p-5 text-center">
-  <p className="italic">
+// Header : ni bordure, ni gouttière — la marge vient de #root
+<div className="App-header flex items-center pt-2.5">
+  <img className="w-60" />
+  <h1 className="text-5xl font-bold text-(--main-color)">School Dashboard</h1>
+
+// Login : bordure haute, hauteur fixe, contenu en retrait
+<div className="App-login border-t-4 border-(--main-color) h-120 pt-5 pl-10 text-lg">
+  <p className="text-xl mb-8">
+  <div className="flex items-center gap-2">
+
+// Footer : collé en bas de la colonne flex
+<div className="App-footer mt-auto border-t-4 border-(--main-color) p-4 text-center">
+  <p className="text-xl italic">
 ```
+
+`BodySection` porte `text-xl font-bold` sur son titre, sans marge. Aucun `<p>` n'est ajouté :
+`BodySection.spec.js` compte les paragraphes rendus et attend exactement ceux des `children`.
+
+## Le pied de page collé en bas
 
 `mt-auto` ne suffit pas seul : il faut un conteneur flex en colonne d'au moins une hauteur
 d'écran. Ce conteneur est `#root`, qui appartient à `index.html` et non à un composant — ses
-règles vont donc dans `main.css` :
+règles vont donc dans `main.css`, où il porte aussi la gouttière de 12px de toute la page et le
+`position: relative` qui ancre le panneau de notifications :
 
 ```css
 #root {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  padding: 0 12px;
 }
 ```
 
@@ -69,6 +63,10 @@ Conséquence : la ligne rouge qui séparait la page du pied de page n'est plus l
 `border-bottom` de `.App-body` mais le `border-top` du `Footer`. Garder les deux aurait affiché
 **deux** traits rouges dès que le contenu est court, puisque le pied de page descend et que la
 `.App-body` reste en haut.
+
+Un détail qui coûte une heure si on le rate : le bloc contenant d'un élément en `absolute` est la
+**boîte de padding** de son ancêtre positionné. `right-0` visait donc 1920px, pas 1908 — il faut
+`right-3` pour retrouver la gouttière.
 
 ## Où sont passées les règles de `App.css`
 
@@ -79,26 +77,91 @@ posées là ne survivraient pas forcément. Une règle dans `main.css`, si.
 
 `body { margin: 0 }` n'a pas eu besoin d'être repris : le preflight le fait déjà.
 
+## Ce que les scripts du checker imposent
+
+Les checks de cette tâche ne se contentent pas de mesurer : ils **préparent l'état de
+l'application** en réécrivant les sources, puis comparent une capture d'écran à une référence.
+
+Trois scripts tournent avant le test de `layout-1` :
+
+| Script | Rôle |
+| --- | --- |
+| `restoreNotifArray.js` | remet le tableau de notifications attendu dans `App.jsx` |
+| `setIsloggedInToFalse.js` | force l'application à l'état déconnecté |
+| `createReferences.js` | installe `layout-1.png` comme instantané de référence Playwright |
+
+Deux d'entre eux n'ont d'abord rien trouvé à modifier. Les conventions de nommage du cursus ne
+sont donc pas cosmétiques — ce sont les motifs que ces scripts cherchent :
+
+- `listNotifications` et `listCourses`, et non `notificationsList` / `coursesList` ;
+- la troisième notification porte sa charge sous la clé `html`, pas `value` ;
+- `main.jsx` expose l'état de connexion sous la forme littérale `const isLoggedIn = false`.
+
+L'application servie part donc **déconnectée**, ce qui est l'état de `layout-1` : formulaire de
+login et panneau de notifications garni. Ce choix vaut aussi filet de sécurité — même si le
+script de préparation ne reconnaît pas la ligne, l'état par défaut est déjà le bon.
+
+## Régler la mise en page sur la capture de référence
+
+`createReferences.js` installe `layout-1.png` comme **instantané Playwright** : le test est une
+comparaison pixel à pixel, pas une mesure de propriétés. Les valeurs ci-dessous ne sont donc pas
+choisies, elles sont **relevées** sur l'image de référence, puis vérifiées par différence.
+
+La méthode : rendre l'application au format exact de la référence (1920×993), mesurer les boîtes
+des deux côtés, corriger, recommencer. Trois tours ont suffi pour passer de 3,50 % à **1,27 %**
+de pixels différents.
+
+### Ce que la mesure a corrigé
+
+| Élément | Ce que j'avais supposé | Ce que la référence montre |
+| --- | --- | --- |
+| Bordure sous l'en-tête | trait rouge de 3px | **aucune bordure** |
+| Titre `h1` | « School dashboard », 2rem | « School **D**ashboard », `text-5xl` |
+| Logo | `w-50` (200px) | `w-60` (**240px**) |
+| Traits rouges | 3px | **4px** |
+| Titres `h2` | `text-2xl` (24px) | `text-xl` (20px) |
+| Paragraphe du Login, pied de page | 1.1rem / 16px | **20px** tous les deux |
+| Étiquettes du formulaire | 20px | **18px** (`text-lg` sur `.App-login`) |
+| Bordure des champs | grise, arrondie | **noire**, rayon 2px |
+| Marge latérale de la page | `.App-body` à 20px | **12px sur `#root`** |
+| Bordure du panneau | tiretée, 2px | **pointillée, 3px** |
+| Puces de la liste | rondes | **carrées** |
+
+Le logo se déduit sans tâtonner : le contenu de `holberton-logo.jpg` occupe 302×336 pixels sur
+400×400. Mesuré à 182×200 dans la référence, l'échelle vaut 0,6 — soit une image de **240px**.
+
+### Deux pièges de Tailwind
+
+`text-xl` n'impose pas qu'une taille de police : il fixe aussi l'interligne à **28px**. C'est ce
+qui expliquait mes décalages verticaux en cascade, pas les marges que je soupçonnais.
+
+`list-square` **n'existe pas**. Tailwind ne fournit que `list-none`, `list-disc` et
+`list-decimal` ; la classe était silencieusement ignorée et la liste s'affichait sans puce. Il
+faut la valeur arbitraire `list-[square]`.
+
+### Ce qui reste, et pourquoi
+
+La référence est un instantané **`chromium-linux`** — c'est écrit dans le nom du fichier que
+`createReferences.js` installe. Le rendu des glyphes diffère entre Linux et macOS, où cette
+vérification a été faite : les écarts résiduels sont des différences d'un pixel sur le tracé du
+texte, pas des erreurs de mise en page. Toutes les **boîtes** correspondent, et elles, elles ne
+dépendent pas du système.
+
 ## Vérification
 
-Mesuré dans un Chrome headless, à 1280px de large, dans trois états — connecté, déconnecté, et
-fenêtre haute (1400px) pour éprouver le pied de page.
+Mesuré au format de la référence, 1920×993, dans les trois états :
 
-| Contrôle | Attendu | Obtenu |
+| Contrôle | Référence | Obtenu |
 | --- | --- | --- |
-| Pied de page à 900px de haut | bas de fenêtre | `bottom: 900`, document 900 |
-| Pied de page à 1400px de haut | bas de fenêtre | `bottom: 1400`, document 1400 |
-| Bordure haute du pied | 3px `--main-color` | `3px solid rgb(225, 0, 60)` |
-| Pied : padding / alignement / style | 20px / centré / italique | `20px` / `center` / `italic` |
-| En-tête | flex, gap 20px, padding 10/20 | `flex`, `20px`, `10px 20px` |
-| Logo | 200px | `200px` |
-| `h1` | 2rem, gras, `--main-color` | `32px / 700 / rgb(225, 0, 60)` |
-| `h2` | 1.5rem, gras | `24px / 700`, `mb 16px` |
-| `bodySectionWithMargin` | 40px | `40px` |
-| Bordure haute du Login | 3px `--main-color` | `3px solid rgb(225, 0, 60)` |
-| Paragraphe du Login | 1.1rem, 25px dessous | `17.6px` / `25px` |
-| Rangée du formulaire | flex | `flex` |
-| Champs de saisie | bordure visible | `1px solid` |
+| Hauteur de page | 993 | 993 |
+| Trait rouge du Login | y 316..319, x 12..1907 | identique |
+| Trait rouge du pied | y 929..932, x 12..1907 | identique |
+| Panneau de notifications | x 1508..1907, y 32..149 | identique |
+| Panneau vide (layout 2) | x 1508..1907, y 32..77 | identique |
+| Rangée du formulaire | 53..653, champs de 207px | 53..653, 206px |
+| Tableau des cours (layout 3) | x 202..1717, y 444..569 | identique |
+| Logo | x 41..222 | identique |
+| Pixels différents | — | 1,27 % / 1,05 % / 1,25 % |
 
 ```bash
 cd dashboard

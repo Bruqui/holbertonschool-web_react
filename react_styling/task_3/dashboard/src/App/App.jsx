@@ -8,13 +8,13 @@ import BodySection from '../BodySection/BodySection'
 import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom'
 import { getLatestNotification } from '../utils/utils'
 
-const notificationsList = [
+const listNotifications = [
   { id: 1, type: 'default', value: 'New course available' },
   { id: 2, type: 'urgent', value: 'New resume available' },
-  { id: 3, type: 'urgent', value: { __html: getLatestNotification() } },
+  { id: 3, type: 'urgent', html: { __html: getLatestNotification() } },
 ]
 
-const coursesList = [
+const listCourses = [
   { id: 1, name: 'ES6', credit: 60 },
   { id: 2, name: 'Webpack', credit: 20 },
   { id: 3, name: 'React', credit: 40 },
@@ -52,13 +52,13 @@ class App extends Component {
       <Fragment>
         <div className="root-notifications">
           {/* Tiroir ouvert : c'est le panneau qu'on veut voir à l'écran. */}
-          <Notifications notifications={notificationsList} displayDrawer />
+          <Notifications notifications={listNotifications} displayDrawer />
         </div>
         <Header />
         <div className="App-body">
           {isLoggedIn ? (
             <BodySectionWithMarginBottom title="Course list">
-              <CourseList courses={coursesList} />
+              <CourseList courses={listCourses} />
             </BodySectionWithMarginBottom>
           ) : (
             <BodySectionWithMarginBottom title="Log in to continue">
@@ -66,7 +66,7 @@ class App extends Component {
             </BodySectionWithMarginBottom>
           )}
           <BodySection title="News from the School">
-            <p>Holberton School News goes here</p>
+            <p>Holberton School news goes here</p>
           </BodySection>
         </div>
         <Footer />

@@ -6,10 +6,12 @@ import '@fontsource/roboto/700.css'
 import './main.css'
 import App from './App/App.jsx'
 
+// État de connexion de l'application servie. Basculer cette seule ligne suffit
+// à passer du formulaire de login à la table des cours.
+const isLoggedIn = false
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {/* isLoggedIn à true : c'est la table des cours qu'on veut afficher ici,
-        pas le formulaire de connexion. */}
-    <App isLoggedIn={true} />
+    <App isLoggedIn={isLoggedIn} />
   </StrictMode>,
 )

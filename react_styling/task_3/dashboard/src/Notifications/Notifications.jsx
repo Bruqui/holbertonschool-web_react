@@ -22,12 +22,12 @@ class Notifications extends Component {
 
     return (
       // Le panneau se place en haut à droite de la page et en occupe un quart.
-      <div className="absolute top-[10px] right-5 w-1/4">
-        <div className="notification-title text-right mb-1.5">
+      <div className="absolute top-1 right-3 w-100">
+        <div className="notification-title text-right mb-1">
           Your notifications
         </div>
         {displayDrawer && (
-          <div className="notification-items border-2 border-dashed border-(--main-color) p-1.5">
+          <div className="notification-items border-[3px] border-dotted border-(--main-color) p-2">
             {notifications.length === 0 ? (
               <p>No new notification for now</p>
             ) : (
@@ -48,7 +48,7 @@ class Notifications extends Component {
                 <p>Here is the list of notifications</p>
                 {/* Le preflight de Tailwind remet les listes à zéro : les puces
                     et le retrait sont donc rétablis explicitement. */}
-                <ul className="list-disc mt-2 pl-6">
+                <ul className="list-[square] pl-6">
                   {notifications.map(({ id, type, html, value }) => {
                     // A notification carrying markup is handed to
                     // dangerouslySetInnerHTML, whether it arrives under `html`

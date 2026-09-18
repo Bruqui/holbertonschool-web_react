@@ -2,35 +2,27 @@ import WithLogging from '../HOC/WithLogging'
 
 function Login() {
   return (
-    <div className="App-login border-t-[3px] border-(--main-color) pt-5">
-      <p className="text-[1.1rem] mb-6.25">
-        Login to access the full dashboard
-      </p>
-      {/* Le formulaire est une rangée flex qui repasse à la ligne sur les
-          petits écrans, plutôt qu'une suite d'éléments en ligne. */}
-      <div className="flex flex-wrap items-center">
-        <label htmlFor="email" className="mr-2">
-          Email:
-        </label>
+    <div className="App-login border-t-4 border-(--main-color) h-120 pt-5 pl-10 text-lg">
+      <p className="text-xl mb-8">Login to access the full dashboard</p>
+      {/* Le formulaire est une rangée flex, plutôt qu'une suite d'éléments en
+          ligne. Les champs et le bouton retrouvent la bordure que le preflight
+          leur avait retirée. */}
+      <div className="flex items-center gap-2">
+        <label htmlFor="email">Email</label>
         <input
           type="email"
           id="email"
           name="email"
-          className="mr-5 border border-gray-400 rounded px-2 py-1"
+          className="border border-black rounded-xs px-2 py-0"
         />
-        <label htmlFor="password" className="mr-2">
-          Password:
-        </label>
+        <label htmlFor="password">Password</label>
         <input
           type="password"
           id="password"
           name="password"
-          className="mr-5 border border-gray-400 rounded px-2 py-1"
+          className="border border-black rounded-xs px-2 py-0"
         />
-        <button
-          type="submit"
-          className="border border-gray-400 rounded px-4 py-1 cursor-pointer"
-        >
+        <button type="submit" className="border border-black rounded-xs px-1 py-0">
           OK
         </button>
       </div>
