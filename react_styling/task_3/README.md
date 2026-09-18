@@ -121,6 +121,23 @@ L'état peut ainsi venir des deux endroits. Vérifié dans les quatre cas : par 
 de login s'affiche ; en basculant soit la constante de `main.jsx`, soit les `defaultProps` de
 `App.jsx`, c'est la table des cours.
 
+### Les checks partagent le même jail
+
+Les checks d'une tâche s'enchaînent dans le même environnement, et ce qu'un check écrit reste
+pour les suivants. Le check `layout-seq3` ne recopie ni `e2e-tests/` ni `playwright.config.js` :
+ils sont déjà là, posés par `layout-seq1`.
+
+Le check « All your unit tests PASS » tourne **après** les checks de mise en page, donc sur un
+`App.jsx` dont `setIsloggedInToTrue.js` a modifié les `defaultProps`. Un test qui affirmait la
+valeur par défaut échouait alors, tout en passant en local :
+
+```jsx
+render(<App />)   // dépend de App.defaultProps.isLoggedIn
+```
+
+Il passe désormais la prop explicitement, et vérifie le comportement plutôt que la valeur par
+défaut. La suite a été jouée dans les deux états d'`App.jsx` — 69 tests verts des deux côtés.
+
 ## Régler la mise en page sur la capture de référence
 
 `createReferences.js` installe `layout-1.png` comme **instantané Playwright** : le test est une
