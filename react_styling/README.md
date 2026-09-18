@@ -8,6 +8,7 @@ couche de style : **TailwindCSS v4** branché directement dans Vite, sans fichie
 | [task_0](task_0) | Set TailwindCSS — plugin Vite, thème Roboto, trois graisses via `@fontsource/roboto` |
 | [task_1](task_1) | Update CourseList and CourseListRow styles — la table des cours passe aux utilitaires, son CSS disparaît |
 | [task_2](task_2) | Update the Notifications Panel — variables de couleur visées par `text-(--var)`, panneau tireté à 25% |
+| [task_3](task_3) | Update the remained styles — dernier CSS supprimé, pied de page collé en bas |
 
 ## Prérequis
 

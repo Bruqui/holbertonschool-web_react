@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@theme {
+  --font-roboto: "Roboto", sans-serif;
+
+  --color-table-header: #deb5b5;
+  --color-table-rows: #CDCDCD;
+
+  --main-color: #e1003c;
+  --default-notification-item: blue;
+  --urgent-notification-item: red;
+}
+
+@layer base {
+  html,
+  body {
+    font-family: var(--font-roboto);
+    color: #2b2b2b;
+    background-color: #ffffff;
+  }
+
+  /* Le pied de page doit rester collé au bas de la fenêtre quelle que soit la
+     hauteur du contenu : la racine est une colonne flex d'au moins un écran,
+     et le Footer porte `mt-auto`. */
+  #root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .App-body {
+    padding: 40px 20px;
+  }
+}
