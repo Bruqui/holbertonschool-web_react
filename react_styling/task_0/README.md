@@ -35,7 +35,8 @@ Toute la configuration passe désormais par le CSS.
 }
 
 @layer base {
-  html {
+  html,
+  body {
     font-family: var(--font-roboto);
   }
 }
@@ -44,8 +45,23 @@ Toute la configuration passe désormais par le CSS.
 - `@import "tailwindcss"` remplace les trois directives `@tailwind` de la v3.
 - `@theme` déclare la variable de thème `--font-roboto`. Le préfixe `--font-*` est reconnu par
   Tailwind, qui génère au passage l'utilitaire `font-roboto`.
-- `@layer base` applique la police sur `html` : l'héritage CSS la propage à toute l'application,
-  et la placer dans la couche `base` la laisse surchargeable par n'importe quel utilitaire.
+- `@layer base` applique la police sur `html` et `body` : l'héritage CSS la propage à toute
+  l'application, et la placer dans la couche `base` la laisse surchargeable par n'importe quel
+  utilitaire.
+
+## Le piège des couches : `App.css`
+
+`App.css` posait `font-family: 'Segoe UI', Helvetica, Arial, sans-serif` sur `body`. Cette
+déclaration a été retirée, sinon Roboto ne s'applique jamais.
+
+La raison tient à la cascade : **le CSS hors couche l'emporte sur le CSS placé dans une
+`@layer`**, quel que soit l'ordre des imports ou la spécificité. `App.css` n'est pas dans une
+couche, notre règle est dans `@layer base` — `Segoe UI` gagnait donc systématiquement.
+
+La conséquence n'est pas seulement visuelle : un navigateur ne télécharge une police que si un
+glyphe l'utilise réellement. Tant que `body` restait en `Segoe UI`, **aucun fichier
+`roboto-*.woff2` n'était demandé**, et le test E2E qui compte ces requêtes réseau échouait, alors
+même que les trois `@font-face` étaient bien déclarées.
 
 ## `src/main.jsx`
 
@@ -65,6 +81,14 @@ les `@font-face` soient déclarées avant la feuille qui les utilise.
 L'intégration ne touche pas à la logique, donc la suite RTL existante passe telle quelle. Les
 imports CSS sont neutralisés côté Jest par le `moduleNameMapper` déjà présent dans
 `package.json` (`identity-obj-proxy`), ce qui couvre aussi les feuilles de `@fontsource`.
+
+Vérifié dans un Chrome headless, sur le serveur de dev comme sur le build de production :
+
+| Contrôle | Résultat |
+| --- | --- |
+| `getComputedStyle(document.body).fontFamily` | `Roboto, sans-serif` |
+| Requêtes réseau de police | `roboto-latin-400-normal.woff2` |
+| `@font-face` Roboto déclarées | `400`, `500`, `700` |
 
 ```bash
 cd dashboard

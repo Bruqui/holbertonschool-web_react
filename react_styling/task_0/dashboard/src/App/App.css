@@ -1,6 +1,6 @@
+/* La police par défaut est posée par main.css, via le thème Tailwind. */
 body {
   margin: 0;
-  font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
   color: #2b2b2b;
   background-color: #ffffff;
 }

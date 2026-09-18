@@ -5,7 +5,8 @@
 }
 
 @layer base {
-  html {
+  html,
+  body {
     font-family: var(--font-roboto);
   }
 }
