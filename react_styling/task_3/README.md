@@ -94,12 +94,32 @@ Deux d'entre eux n'ont d'abord rien trouvé à modifier. Les conventions de nomm
 sont donc pas cosmétiques — ce sont les motifs que ces scripts cherchent :
 
 - `listNotifications` et `listCourses`, et non `notificationsList` / `coursesList` ;
-- la troisième notification porte sa charge sous la clé `html`, pas `value` ;
-- `main.jsx` expose l'état de connexion sous la forme littérale `const isLoggedIn = false`.
+- la troisième notification porte sa charge sous la clé `html`, pas `value`.
 
-L'application servie part donc **déconnectée**, ce qui est l'état de `layout-1` : formulaire de
-login et panneau de notifications garni. Ce choix vaut aussi filet de sécurité — même si le
-script de préparation ne reconnaît pas la ligne, l'état par défaut est déjà le bon.
+L'application servie part **déconnectée**, ce qui est l'état de `layout-1`.
+
+### Ne pas écraser la valeur que le script vient d'écrire
+
+`setIsloggedInToTrue.js` modifie `isLoggedIn: false` dans les `defaultProps` de `App.jsx`. Or
+`main.jsx` passait la prop explicitement :
+
+```jsx
+<App isLoggedIn={isLoggedIn} />   // isLoggedIn === false
+```
+
+Une prop explicite l'emporte toujours sur une `defaultProps`. Le script annonçait donc
+« Successfully updated isLoggedIn to true » pendant que l'application continuait d'afficher le
+formulaire de login — et le test expirait en attendant `#CourseList`.
+
+La prop n'est désormais passée **que lorsqu'elle vaut `true`** :
+
+```jsx
+{isLoggedIn ? <App isLoggedIn /> : <App />}
+```
+
+L'état peut ainsi venir des deux endroits. Vérifié dans les quatre cas : par défaut le formulaire
+de login s'affiche ; en basculant soit la constante de `main.jsx`, soit les `defaultProps` de
+`App.jsx`, c'est la table des cours.
 
 ## Régler la mise en page sur la capture de référence
 

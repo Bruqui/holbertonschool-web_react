@@ -6,12 +6,12 @@ import '@fontsource/roboto/700.css'
 import './main.css'
 import App from './App/App.jsx'
 
-// État de connexion de l'application servie. Basculer cette seule ligne suffit
-// à passer du formulaire de login à la table des cours.
+// État de connexion de l'application servie.
 const isLoggedIn = false
 
+// La prop n'est passée que lorsqu'elle vaut `true`. Passer `isLoggedIn={false}`
+// écraserait la valeur par défaut de `App`, qui est l'autre endroit où cet état
+// peut être réglé.
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App isLoggedIn={isLoggedIn} />
-  </StrictMode>,
+  <StrictMode>{isLoggedIn ? <App isLoggedIn /> : <App />}</StrictMode>
 )
