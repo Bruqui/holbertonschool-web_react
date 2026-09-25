@@ -52,7 +52,7 @@ class Notifications extends Component {
                     padding: 0,
                   }}
                 >
-                  <img src={closeButton} alt="close" width="12" height="12" />
+                  <img src={closeButton} alt="close icon" width="12" height="12" />
                 </button>
                 <p className="max-[912px]:text-xl">
                   Here is the list of notifications
