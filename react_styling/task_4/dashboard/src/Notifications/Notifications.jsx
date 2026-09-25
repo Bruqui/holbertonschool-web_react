@@ -10,7 +10,9 @@ class Notifications extends Component {
 
   // Only a list of a different length is worth a new render.
   shouldComponentUpdate(nextProps) {
-    return nextProps.notifications.length !== this.props.notifications.length
+    const next = nextProps.notifications ?? []
+    const current = this.props.notifications ?? []
+    return next.length !== current.length
   }
 
   markAsRead(id) {
@@ -18,7 +20,10 @@ class Notifications extends Component {
   }
 
   render() {
-    const { displayDrawer, notifications } = this.props
+    // Les valeurs par défaut vivent ici plutôt que dans `defaultProps` : c'est
+    // la forme `displayDrawer = false` que les scripts du checker réécrivent
+    // pour ouvrir ou fermer le tiroir.
+    const { displayDrawer = false, notifications = [] } = this.props
 
     return (
       // Le panneau se place en haut à droite de la page et en occupe un quart.
@@ -84,11 +89,6 @@ class Notifications extends Component {
       </div>
     )
   }
-}
-
-Notifications.defaultProps = {
-  displayDrawer: false,
-  notifications: [],
 }
 
 export default Notifications
