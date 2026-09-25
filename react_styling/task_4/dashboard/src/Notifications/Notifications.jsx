@@ -20,10 +20,11 @@ class Notifications extends Component {
   }
 
   render() {
-    // Les valeurs par défaut vivent ici plutôt que dans `defaultProps` : c'est
-    // la forme `displayDrawer = false` que les scripts du checker réécrivent
-    // pour ouvrir ou fermer le tiroir.
-    const { displayDrawer = false, notifications = [] } = this.props
+    // Valeurs par défaut en destructuration plutôt que dans `defaultProps` :
+    // c'est la forme littérale `displayDrawer = true` que les scripts du
+    // checker réécrivent pour fermer le tiroir. Le tiroir est donc ouvert par
+    // défaut — les captures du panneau ne passent aucun script pour l'ouvrir.
+    const { displayDrawer = true, notifications = [] } = this.props
 
     return (
       // Le panneau se place en haut à droite de la page et en occupe un quart.
