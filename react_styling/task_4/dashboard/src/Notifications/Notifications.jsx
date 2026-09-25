@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import closeButton from '../assets/close-button.png'
+import closeIcon from '../assets/close-icon.png'
 import NotificationItem from './NotificationItem'
 
 class Notifications extends Component {
@@ -12,7 +12,10 @@ class Notifications extends Component {
   shouldComponentUpdate(nextProps) {
     const next = nextProps.notifications ?? []
     const current = this.props.notifications ?? []
-    return next.length !== current.length
+    return (
+      next.length !== current.length ||
+      nextProps.displayDrawer !== this.props.displayDrawer
+    )
   }
 
   markAsRead(id) {
@@ -52,7 +55,7 @@ class Notifications extends Component {
                     padding: 0,
                   }}
                 >
-                  <img src={closeButton} alt="close icon" width="12" height="12" />
+                  <img src={closeIcon} alt="close icon" width="12" height="12" />
                 </button>
                 <p className="max-[912px]:text-xl">
                   Here is the list of notifications
