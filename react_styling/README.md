@@ -10,6 +10,7 @@ couche de style : **TailwindCSS v4** branché directement dans Vite, sans fichie
 | [task_2](task_2) | Update the Notifications Panel — variables de couleur visées par `text-(--var)`, panneau tireté à 25% |
 | [task_3](task_3) | Update the remained styles — dernier CSS supprimé, pied de page collé en bas |
 | [task_4](task_4) | Go Responsive — points de rupture à 912px et 520px, panneau de notifications en plein écran |
+| [task_5](task_5) | Animation — le titre des notifications rebondit tant qu'il reste à lire |
 
 ## Prérequis
 
