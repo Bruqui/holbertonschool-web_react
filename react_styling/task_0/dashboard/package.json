@@ -44,8 +44,9 @@
     "vite": "^6.3.5"
   },
   "jest": {
-    "roots": [
-      "<rootDir>/src"
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/e2e-tests/"
     ],
     "testEnvironment": "jsdom",
     "moduleNameMapper": {
