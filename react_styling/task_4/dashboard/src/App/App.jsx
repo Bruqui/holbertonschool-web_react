@@ -8,7 +8,7 @@ import BodySection from '../BodySection/BodySection'
 import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom'
 import { getLatestNotification } from '../utils/utils'
 
-const listNotifications = [
+const notificationsList = [
   { id: 1, type: 'default', value: 'New course available' },
   { id: 2, type: 'urgent', value: 'New resume available' },
   { id: 3, type: 'urgent', html: { __html: getLatestNotification() } },
@@ -58,7 +58,7 @@ class App extends Component {
         <div className="root-notifications">
           {/* `displayDrawer` n'est pas forcé ici : la valeur par défaut de
               Notifications reste la source de vérité. */}
-          <Notifications notifications={listNotifications} />
+          <Notifications notifications={notificationsList} />
         </div>
         <Header />
         <div className="App-body pt-[38px]">
