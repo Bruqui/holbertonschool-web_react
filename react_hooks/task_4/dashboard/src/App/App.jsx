@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components --
    les listes initiales sont exportées pour les tests, à côté du composant. */
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import axios from 'axios'
 import Notifications from '../Notifications/Notifications'
 import Header from '../Header/Header'
 import Login from '../Login/Login'
@@ -35,6 +36,52 @@ function App() {
   // et celui auquel la déconnexion revient.
   const [user, setUser] = useState(defaultUser)
   const [notifications, setNotifications] = useState(notificationsList)
+
+  // Les mêmes notifications sont servies par `public/notifications.json`, que
+  // les tests du checker simulent avec jest-mock-axios. Si la requête échoue,
+  // la liste initiale reste en place.
+  useEffect(() => {
+    let isMounted = true
+
+    axios
+      .get('http://localhost:5173/notifications.json')
+      .then(({ data }) => {
+        if (!isMounted || !Array.isArray(data?.notifications)) return
+        // Le JSON ne peut pas porter le HTML calculé de la dernière
+        // notification : il est rempli ici, comme dans la liste initiale.
+        setNotifications(
+          data.notifications.map((notification) =>
+            notification.html && !notification.html.__html
+              ? { ...notification, html: { __html: getLatestNotification() } }
+              : notification
+          )
+        )
+      })
+      .catch(() => {})
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  // Même principe pour les cours, demandés à chaque connexion.
+  const [courses, setCourses] = useState(coursesList)
+
+  useEffect(() => {
+    if (!user.isLoggedIn) return undefined
+    let isMounted = true
+
+    axios
+      .get('http://localhost:5173/courses.json')
+      .then(({ data }) => {
+        if (isMounted && Array.isArray(data?.courses)) setCourses(data.courses)
+      })
+      .catch(() => {})
+
+    return () => {
+      isMounted = false
+    }
+  }, [user.isLoggedIn])
 
   // Chaque callback est mémoïsé : Notifications ne compare pas ses callbacks,
   // il doit donc toujours recevoir les mêmes fonctions.
@@ -89,7 +136,7 @@ function App() {
         <div className="App-body pt-[38px]">
           {user.isLoggedIn ? (
             <BodySectionWithMarginBottom title="Course list">
-              <CourseList courses={coursesList} />
+              <CourseList courses={courses} />
             </BodySectionWithMarginBottom>
           ) : (
             <BodySectionWithMarginBottom title="Log in to continue">

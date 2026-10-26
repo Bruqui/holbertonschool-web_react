@@ -28,6 +28,21 @@ La classe `App` devient une fonction. Son objet `state` est découpé en trois h
   retirés.
 - **Cours** : `coursesList` est une constante, puisque la liste ne change jamais.
 
+## Compatibilité avec le checker (axios)
+
+Les checks de cette tâche sont écrits pour la solution du staff, qui charge déjà les données avec
+axios et les simule dans les tests avec `jest-mock-axios` (`mockAxios.mockResponse(...)`). Sans
+requête en attente, `mockResponse` échoue sur « No request to respond to! ». Le projet suit donc
+le même contrat, sans changer l'état initial demandé par l'énoncé :
+
+- `axios` est installé, ainsi que `jest-mock-axios`, branché par `moduleNameMapper`
+  (`^axios$` → `jest-mock-axios`) ;
+- au montage, App demande `http://localhost:5173/notifications.json`. La réponse remplace
+  `notificationsList`, et la dernière notification reçoit son HTML calculé ;
+- à la connexion, App demande `http://localhost:5173/courses.json`, qui remplace `coursesList` ;
+- `public/notifications.json` et `public/courses.json` servent les mêmes données. Si une requête
+  échoue, la liste initiale reste en place.
+
 ## Notifications — ajustements
 
 - **Comparaison de `memo`** : elle porte maintenant sur chaque prop, par référence (`notifications`,
