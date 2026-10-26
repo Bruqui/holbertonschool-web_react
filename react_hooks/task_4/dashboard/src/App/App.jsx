@@ -59,8 +59,8 @@ function App() {
   // courant : deux clics rapprochés ne s'écrasent pas.
   const markNotificationAsRead = useCallback((id) => {
     console.log(`Notification ${id} has been marked as read`)
-    setNotifications((previous) =>
-      previous.filter((notification) => notification.id !== id)
+    setNotifications((prevNotifications) =>
+      prevNotifications.filter((notification) => notification.id !== id)
     )
   }, [])
 
