@@ -11,6 +11,7 @@ place des classes ES6 et des méthodes de cycle de vie.
 | [task_2](task_2) | Update the NotificationItem component — `memo` remplace `PureComponent` |
 | [task_3](task_3) | Update the Notifications component — `memo` avec comparaison sur le tiroir et la longueur de la liste |
 | [task_4](task_4) | Modernizing the Parent — App devient une fonction, état en `useState`, callbacks en `useCallback` |
+| [task_4](task_4) / [task_5](task_5) | Side Effect — notifications et cours chargés avec axios dans des `useEffect` |
 
 ## Prérequis
 

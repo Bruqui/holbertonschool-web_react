@@ -1,70 +1,68 @@
-# Task 4. Modernizing the Parent
+# Task 4. Modernizing the Parent — Task 5. Side Effect
 
 Copie du `dashboard` de la [tâche 3](../task_3) : tous les enfants d'App y sont déjà des
-composants fonctionnels.
+composants fonctionnels. L'énoncé place les tâches 5 et 6 dans ce même dossier. Le dossier
+[task_5](../task_5) en contient une copie identique.
 
-## App — composant fonctionnel
+## App — composant fonctionnel (tâche 5)
 
-La classe `App` devient une fonction. Son objet `state` est découpé en trois hooks `useState` :
+La classe `App` devient une fonction. Son objet `state` est découpé en hooks `useState` :
 
 | État | Setter | Valeur initiale |
 | --- | --- | --- |
 | `displayDrawer` | `setDisplayDrawer` | `true` |
 | `user` | `setUser` | l'utilisateur du contexte (non connecté) |
-| `notifications` | `setNotifications` | `notificationsList` |
+| `notifications` | `setNotifications` | `[]`, rempli par le serveur |
+| `courses` | `setCourses` | `[]`, rempli par le serveur |
 
 - **Utilisateur du contexte** : `context.js` exporte `user`, l'utilisateur non connecté qui sert
   de valeur par défaut au contexte. App l'importe comme état initial, et `logOut` y revient.
-- **Listes exportées** : `notificationsList` et `coursesList` sont exportées depuis `App.jsx`, ce
-  qui permet aux tests de comparer l'état à la liste d'origine.
 - **Callbacks mémoïsés** : `handleDisplayDrawer`, `handleHideDrawer`, `logIn`, `logOut` et
   `markNotificationAsRead` passent par `useCallback` et gardent la même référence d'un rendu à
-  l'autre. C'est nécessaire, car `Notifications` ne compare pas ses callbacks.
+  l'autre.
 - **Mises à jour immuables** : `logIn` crée un nouvel objet utilisateur. `markNotificationAsRead`
   calcule une nouvelle liste filtrée à partir de l'état précédent.
 - **Valeur du contexte** : `useMemo` ne reconstruit `{ user, logOut }` que lorsque l'utilisateur
-  change. Le reste de l'interface ne fait donc pas re-rendre les consommateurs.
+  change.
 - **Ctrl+H supprimé** : `handleKeyDown`, `componentDidMount` et `componentWillUnmount` sont
   retirés.
-- **Cours** : `coursesList` est une constante, puisque la liste ne change jamais.
 
-## Compatibilité avec le checker (axios)
+## Données chargées par effet (tâche 6)
 
-Les checks de cette tâche sont écrits pour la solution du staff, qui charge déjà les données avec
-axios et les simule dans les tests avec `jest-mock-axios` (`mockAxios.mockResponse(...)`). Sans
-requête en attente, `mockResponse` échoue sur « No request to respond to! ». Le projet suit donc
-le même contrat, sans changer l'état initial demandé par l'énoncé :
+Les listes codées en dur `notificationsList` et `coursesList` disparaissent. Les données viennent
+de [public/notifications.json](dashboard/public/notifications.json) et
+[public/courses.json](dashboard/public/courses.json), lues avec axios dans deux `useEffect` :
 
-- `axios` est installé, ainsi que `jest-mock-axios`, branché par `moduleNameMapper`
-  (`^axios$` → `jest-mock-axios`) ;
-- au montage, App demande `http://localhost:5173/notifications.json`. La réponse remplace
-  `notificationsList`, et la dernière notification reçoit son HTML calculé ;
-- à la connexion, App demande `http://localhost:5173/courses.json`, qui remplace `coursesList` ;
-- `public/notifications.json` et `public/courses.json` servent les mêmes données. Si une requête
-  échoue, la liste initiale reste en place.
+- **Notifications** : une requête au montage (dépendances `[]`), vers
+  `http://localhost:5173/notifications.json`. La dernière notification arrive avec un `__html`
+  vide, que `getLatestNotification()` remplit.
+- **Cours** : une requête à chaque connexion (dépendance `[user.isLoggedIn]`), vers
+  `http://localhost:5173/courses.json`. À la déconnexion, les cours sont vidés sans requête.
+- **Nettoyage** : chaque effet renvoie une fonction qui ignore une réponse arrivée trop tard,
+  après un démontage ou une déconnexion.
+- **Erreurs** : chaque requête est dans un `try/catch`. L'erreur est loguée par `console.error`
+  en développement seulement, et la liste reste vide.
 
 ## Notifications — ajustements
 
-- **Comparaison de `memo`** : elle porte maintenant sur chaque prop, par référence (`notifications`,
-  `displayDrawer` et les trois callbacks). App mémoïse ses callbacks, donc seul un vrai changement
-  d'état déclenche un rendu.
-- **Bouton de fermeture** : il appelle directement `handleHideDrawer`. Le log
-  `Close button has been clicked`, hérité de `react_intro`, est retiré : le seul message restant
-  est celui de `markNotificationAsRead`.
+- **Comparaison de `memo`** : elle porte sur chaque prop, par référence (`notifications`,
+  `displayDrawer` et les trois callbacks).
+- **Bouton de fermeture** : il appelle directement `handleHideDrawer`, sans log.
+- **NotificationItem** : il est déclaré `const NotificationItem = memo(function NotificationItem({`,
+  sans valeur par défaut dans les paramètres. Le runner du checker repère cette forme pour y
+  injecter un log de rendu.
 
 ## Tests
 
-[App.spec.js](dashboard/src/App/App.spec.js) :
+[App.spec.js](dashboard/src/App/App.spec.js) remplace axios par `jest-mock-axios`, branché par
+`moduleNameMapper` (`^axios$` → `jest-mock-axios`). `renderApp()` rend App puis répond à la
+requête des notifications. `logIn()` passe par le formulaire puis répond à celle des cours.
 
-- **`handleDisplayDrawer` et `handleHideDrawer`** : ouverture, fermeture, tiroir déjà ouvert,
-  allers-retours.
-- **État `user`** : il est lu à travers une sonde. Le module `Header` est remplacé par le vrai
-  Header suivi d'un `<output>` caché qui expose l'utilisateur du contexte, ce qui permet de
-  vérifier le mot de passe, jamais affiché. Les tests couvrent la valeur initiale, `logIn`
-  (email, mot de passe, `isLoggedIn: true`), `logOut` (`isLoggedIn: false`, champs vidés) et une
-  reconnexion.
-- **Ctrl+H** : il ne déclenche plus ni alerte ni déconnexion.
-- **Notifications** : la liste survit à une connexion puis une déconnexion.
-
-Les specs de Header, Login, Footer, Notifications et NotificationItem testent déjà des composants
-fonctionnels depuis les tâches 0 à 3.
+- **Chargement des notifications** : une seule requête, au premier rendu. Les notifications
+  s'affichent, la dernière avec son HTML. Un échec est logué, et une réponse arrivée après le
+  démontage est ignorée.
+- **Chargement des cours** : aucune requête tant que l'utilisateur n'est pas connecté, une à chaque
+  connexion. Les cours s'affichent, sont vidés à la déconnexion, un échec est logué, et une réponse
+  arrivée après la déconnexion est ignorée.
+- **Fonctionnalités existantes** : tiroir, marquage comme lu, connexion et déconnexion, état
+  `user` lu par une sonde sur le Header, et Ctrl+H désactivé.
