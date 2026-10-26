@@ -13,6 +13,7 @@ place des classes ES6 et des méthodes de cycle de vie.
 | [task_4](task_4) | Modernizing the Parent — App devient une fonction, état en `useState`, callbacks en `useCallback` |
 | [task_4](task_4) / [task_5](task_5) | Side Effect — notifications et cours chargés avec axios dans des `useEffect` |
 | [task_5](task_5) | Custom React hook — l'état et la logique du formulaire passent dans `useLogin` |
+| [task_6](task_6) | State Symphony — `useReducer` remplace le Context API, l'état passe par les props |
 
 ## Prérequis
 
