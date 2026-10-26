@@ -7,6 +7,7 @@ place des classes ES6 et des méthodes de cycle de vie.
 | --- | --- |
 | [task_0](task_0) | Convert Header Component — Header devient une fonction qui lit le contexte par `useContext` |
 | [task_0](task_0) | Update Footer Component — Footer lit le contexte par `useContext` au lieu du `Consumer` |
+| [task_1](task_1) | Convert Login component — Login devient une fonction, son état passe par `useState` |
 
 ## Prérequis
 
