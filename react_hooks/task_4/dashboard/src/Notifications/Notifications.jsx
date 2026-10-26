@@ -41,10 +41,7 @@ function Notifications({
             <>
               <button
                 aria-label="Close"
-                onClick={() => {
-                  console.log('Close button has been clicked')
-                  handleHideDrawer()
-                }}
+                onClick={handleHideDrawer}
                 style={{
                   float: 'right',
                   background: 'transparent',
@@ -92,13 +89,14 @@ function Notifications({
   )
 }
 
-// memo ne compare que ce qui change l'affichage : l'ouverture du tiroir et le
-// nombre de notifications. App retire une notification dès qu'elle est lue,
-// la longueur suffit donc à suivre la liste. Renvoyer `false` déclenche le
-// rendu.
+// memo compare chaque prop par référence. App remplace la liste dès qu'une
+// notification est lue et mémoïse ses callbacks : seul un vrai changement
+// d'état fait renvoyer `false`, ce qui déclenche le rendu.
 const areEqual = (prevProps, nextProps) =>
   prevProps.displayDrawer === nextProps.displayDrawer &&
-  (prevProps.notifications ?? []).length ===
-    (nextProps.notifications ?? []).length
+  prevProps.notifications === nextProps.notifications &&
+  prevProps.handleDisplayDrawer === nextProps.handleDisplayDrawer &&
+  prevProps.handleHideDrawer === nextProps.handleHideDrawer &&
+  prevProps.markNotificationAsRead === nextProps.markNotificationAsRead
 
 export default memo(Notifications, areEqual)

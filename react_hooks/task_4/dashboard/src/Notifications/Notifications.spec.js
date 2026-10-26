@@ -118,20 +118,15 @@ describe('Notifications', () => {
       expect(items[2]).toHaveAttribute('data-notification-type', 'urgent')
     })
 
-    test('logs to the console when the close button is clicked', () => {
+    test('does not log anything when the close button is clicked', () => {
       const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
       render(<Notifications displayDrawer notifications={notificationsList} />)
 
-      // Nothing is logged until the button is actually hit.
-      expect(consoleSpy).not.toHaveBeenCalled()
-
       fireEvent.click(screen.getByRole('button', { name: /close/i }))
 
-      // Case-insensitive on the wording, but still strict enough to reject a
-      // handler that logs a different message entirely.
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringMatching(/close button has been clicked/i)
-      )
+      // Closing belongs to App through handleHideDrawer: the only log left in
+      // the drawer is the one App writes when a notification is read.
+      expect(consoleSpy).not.toHaveBeenCalled()
 
       consoleSpy.mockRestore()
     })
@@ -170,7 +165,7 @@ describe('Notifications', () => {
   })
 
   // memo only lets a render through when its comparison returns false, that
-  // is when displayDrawer or the number of notifications changed.
+  // is when one of the props changed reference.
   describe('when it receives new props', () => {
     let renderSpy
 
@@ -194,7 +189,7 @@ describe('Notifications', () => {
       expect(renderSpy).toHaveBeenCalledTimes(1)
     })
 
-    test('does not re-render when the new list has the same length', () => {
+    test('renders a new list even when it has the same length', () => {
       const { container, rerender } = render(
         <Notifications displayDrawer notifications={notificationsList} />
       )
@@ -206,12 +201,33 @@ describe('Notifications', () => {
 
       rerender(<Notifications displayDrawer notifications={sameLength} />)
 
-      expect(renderSpy).toHaveBeenCalledTimes(1)
-      expect(screen.queryByText(/updated course/i)).not.toBeInTheDocument()
+      expect(renderSpy).toHaveBeenCalledTimes(2)
+      expect(screen.getByText(/updated course/i)).toBeInTheDocument()
       expect(container.querySelectorAll('li')).toHaveLength(3)
     })
 
-    test('does not re-render when only a callback changes', () => {
+    test('does not re-render when the callbacks keep their reference', () => {
+      const markNotificationAsRead = () => {}
+      const { rerender } = render(
+        <Notifications
+          displayDrawer
+          notifications={notificationsList}
+          markNotificationAsRead={markNotificationAsRead}
+        />
+      )
+
+      rerender(
+        <Notifications
+          displayDrawer
+          notifications={notificationsList}
+          markNotificationAsRead={markNotificationAsRead}
+        />
+      )
+
+      expect(renderSpy).toHaveBeenCalledTimes(1)
+    })
+
+    test('re-renders when a callback changes reference', () => {
       const { rerender } = render(
         <Notifications
           displayDrawer
@@ -228,7 +244,7 @@ describe('Notifications', () => {
         />
       )
 
-      expect(renderSpy).toHaveBeenCalledTimes(1)
+      expect(renderSpy).toHaveBeenCalledTimes(2)
     })
 
     test('renders a shorter list once a notification is removed', () => {

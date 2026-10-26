@@ -28,6 +28,15 @@ La classe `App` devient une fonction. Son objet `state` est découpé en trois h
   retirés.
 - **Cours** : `coursesList` est une constante, puisque la liste ne change jamais.
 
+## Notifications — ajustements
+
+- **Comparaison de `memo`** : elle porte maintenant sur chaque prop, par référence (`notifications`,
+  `displayDrawer` et les trois callbacks). App mémoïse ses callbacks, donc seul un vrai changement
+  d'état déclenche un rendu.
+- **Bouton de fermeture** : il appelle directement `handleHideDrawer`. Le log
+  `Close button has been clicked`, hérité de `react_intro`, est retiré : le seul message restant
+  est celui de `markNotificationAsRead`.
+
 ## Tests
 
 [App.spec.js](dashboard/src/App/App.spec.js) :
