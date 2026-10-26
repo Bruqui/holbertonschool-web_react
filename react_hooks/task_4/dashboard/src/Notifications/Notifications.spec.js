@@ -122,11 +122,16 @@ describe('Notifications', () => {
       const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
       render(<Notifications displayDrawer notifications={notificationsList} />)
 
+      // Only what the click logs counts: the checker injects a render log
+      // into NotificationItem, which fires while the drawer is drawn.
+      consoleSpy.mockClear()
       fireEvent.click(screen.getByRole('button', { name: /close/i }))
 
       // Closing belongs to App through handleHideDrawer: the only log left in
       // the drawer is the one App writes when a notification is read.
-      expect(consoleSpy).not.toHaveBeenCalled()
+      expect(consoleSpy).not.toHaveBeenCalledWith(
+        expect.stringMatching(/close button/i)
+      )
 
       consoleSpy.mockRestore()
     })
