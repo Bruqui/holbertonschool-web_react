@@ -57,5 +57,26 @@ describe('Footer', () => {
       expect(link).toBeInTheDocument()
       expect(link.closest('p')).toBeInTheDocument()
     })
+
+    test('disappears once the user in the context logs out', () => {
+      const { rerender } = renderWithUser({
+        email: 'user@example.com',
+        password: 'secret-password',
+        isLoggedIn: true,
+      })
+
+      rerender(
+        <ContextProvider
+          value={{
+            user: { email: '', password: '', isLoggedIn: false },
+            logOut: () => {},
+          }}
+        >
+          <Footer />
+        </ContextProvider>
+      )
+
+      expect(screen.queryByText(/contact us/i)).not.toBeInTheDocument()
+    })
   })
 })

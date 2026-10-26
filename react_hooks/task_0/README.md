@@ -15,8 +15,17 @@ par le hook `useContext(newContext)`. Le JSX est inchangé :
 Hors de tout Provider, le hook renvoie la valeur par défaut du contexte : un visiteur non connecté,
 donc pas de section de déconnexion.
 
+## Footer — tâche 1 (Update Footer Component)
+
+Le `newContext.Consumer` et sa fonction enfant sont remplacés par `useContext(newContext)`. Le JSX
+est inchangé : le copyright, puis un paragraphe avec le lien **Contact us** quand l'utilisateur
+existe et est connecté. Le lien disparaît dès que le contexte passe à un utilisateur déconnecté.
+
 ## Tests
 
 [Header.spec.js](dashboard/src/Header/Header.spec.js) vérifie que `Header` est une fonction et non
 une classe, le logo, le titre, l'absence de la section avec le contexte par défaut, son affichage
 pour un utilisateur connecté, et l'appel de `logOut` au clic.
+
+[Footer.spec.js](dashboard/src/Footer/Footer.spec.js) vérifie le copyright, et l'affichage du lien
+**Contact us** selon l'utilisateur du contexte, y compris sa disparition à la déconnexion.
