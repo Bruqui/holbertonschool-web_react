@@ -1,6 +1,7 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, renderHook, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Login from './Login'
+import useLogin from '../hooks/useLogin'
 
 describe('Login', () => {
   test('renders 2 label, 2 input and 1 button elements', () => {
@@ -161,5 +162,64 @@ describe('Login', () => {
     test('is still wrapped by WithLogging', () => {
       expect(Login.displayName).toMatch(/WithLogging\(Login\)/)
     })
+  })
+})
+
+// The form logic now lives in useLogin: the hook is checked on its own, with
+// change events shaped like the ones the inputs send.
+describe('useLogin', () => {
+  const change = (value) => ({ target: { value } })
+
+  test('starts with empty fields and the submit disabled', () => {
+    const { result } = renderHook(() => useLogin(jest.fn()))
+
+    expect(result.current.email).toBe('')
+    expect(result.current.password).toBe('')
+    expect(result.current.enableSubmit).toBe(false)
+  })
+
+  test('updates each field and keeps the other one', () => {
+    const { result } = renderHook(() => useLogin(jest.fn()))
+
+    act(() => result.current.handleChangeEmail(change('user@example.com')))
+    act(() => result.current.handleChangePassword(change('secret-password')))
+
+    expect(result.current.email).toBe('user@example.com')
+    expect(result.current.password).toBe('secret-password')
+  })
+
+  test('enables the submit only for a valid email and an 8-character password', () => {
+    const { result } = renderHook(() => useLogin(jest.fn()))
+
+    act(() => result.current.handleChangeEmail(change('not-an-email')))
+    act(() => result.current.handleChangePassword(change('12345678')))
+    expect(result.current.enableSubmit).toBe(false)
+
+    act(() => result.current.handleChangeEmail(change('user@example.com')))
+    expect(result.current.enableSubmit).toBe(true)
+
+    act(() => result.current.handleChangePassword(change('1234567')))
+    expect(result.current.enableSubmit).toBe(false)
+  })
+
+  test('prevents the default submission and calls onLogin with the fields', () => {
+    const onLogin = jest.fn()
+    const preventDefault = jest.fn()
+    const { result } = renderHook(() => useLogin(onLogin))
+
+    act(() => result.current.handleChangeEmail(change('user@example.com')))
+    act(() => result.current.handleChangePassword(change('secret-password')))
+    act(() => result.current.handleLoginSubmit({ preventDefault }))
+
+    expect(preventDefault).toHaveBeenCalledTimes(1)
+    expect(onLogin).toHaveBeenCalledWith('user@example.com', 'secret-password')
+  })
+
+  test('does not crash on submit without an onLogin callback', () => {
+    const { result } = renderHook(() => useLogin())
+
+    expect(() =>
+      act(() => result.current.handleLoginSubmit({ preventDefault: () => {} }))
+    ).not.toThrow()
   })
 })

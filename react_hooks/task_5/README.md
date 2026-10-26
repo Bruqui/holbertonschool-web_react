@@ -1,4 +1,4 @@
-# Task 5. Side Effect
+# Task 5. Side Effect — Custom React hook
 
 Copie identique du `dashboard` de la [tâche 4](../task_4) : l'énoncé de « Side Effect » désigne
 le dossier `task_4`, où le code a été écrit. Cette copie couvre le cas où le checker chercherait
@@ -42,6 +42,26 @@ de [public/notifications.json](dashboard/public/notifications.json) et
   après un démontage ou une déconnexion.
 - **Erreurs** : chaque requête est dans un `try/catch`. L'erreur est loguée par `console.error`
   en développement seulement, et la liste reste vide.
+
+## Hook personnalisé useLogin (tâche 7)
+
+[src/hooks/useLogin.jsx](dashboard/src/hooks/useLogin.jsx) reprend tout l'état et toute la
+logique du formulaire de connexion. Il reçoit un callback `onLogin` et renvoie :
+
+- les valeurs `email`, `password` et `enableSubmit` ;
+- les gestionnaires `handleChangeEmail`, `handleChangePassword` et `handleLoginSubmit`.
+
+La validation ne change pas : le bouton **OK** démarre désactivé, et ne s'active qu'avec un email
+valide et un mot de passe d'au moins 8 caractères. À la soumission, le hook empêche le
+rechargement de la page puis appelle `onLogin(email, password)`.
+
+[Login.jsx](dashboard/src/Login/Login.jsx) ne garde ni état ni logique : il appelle
+`useLogin(logIn)` et branche les valeurs et gestionnaires renvoyés sur le formulaire. Il reste
+exporté enveloppé par `WithLogging`.
+
+[Login.spec.js](dashboard/src/Login/Login.spec.js) garde tous ses tests de comportement, et teste
+le hook seul avec `renderHook` : valeurs initiales, mise à jour des champs, règles de validation,
+soumission et absence de callback.
 
 ## Notifications — ajustements
 

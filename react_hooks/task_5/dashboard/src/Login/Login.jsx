@@ -1,39 +1,17 @@
-import { useState } from 'react'
 import WithLogging from '../HOC/WithLogging'
+import useLogin from '../hooks/useLogin'
 
-// Volontairement simple : une partie locale, une arobase, un domaine avec au
-// moins un point, sans espace nulle part.
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const PASSWORD_MIN_LENGTH = 8
-
-// Recalculé à partir des deux valeurs à chaque frappe, pour que le bouton
-// suive les champs sans décalage.
-const canSubmit = (email, password) =>
-  EMAIL_REGEX.test(email) && password.length >= PASSWORD_MIN_LENGTH
-
-function Login({ logIn = () => {} }) {
-  const [enableSubmit, setEnableSubmit] = useState(false)
-  const [formData, setFormData] = useState({ email: '', password: '' })
-
-  const handleLoginSubmit = (event) => {
-    // Sans cela, le navigateur soumet le formulaire et recharge la page.
-    event.preventDefault()
-    // La connexion appartient à App : Login se contente de lui transmettre
-    // les identifiants saisis.
-    logIn(formData.email, formData.password)
-  }
-
-  const handleChangeEmail = (event) => {
-    const email = event.target.value
-    setFormData({ ...formData, email })
-    setEnableSubmit(canSubmit(email, formData.password))
-  }
-
-  const handleChangePassword = (event) => {
-    const password = event.target.value
-    setFormData({ ...formData, password })
-    setEnableSubmit(canSubmit(formData.email, password))
-  }
+// Login ne garde plus ni état ni logique : useLogin valide les champs et
+// transmet les identifiants à la prop `logIn` d'App à la soumission.
+function Login({ logIn }) {
+  const {
+    email,
+    password,
+    enableSubmit,
+    handleChangeEmail,
+    handleChangePassword,
+    handleLoginSubmit,
+  } = useLogin(logIn)
 
   return (
     <div className="App-login border-t-4 border-(--main-color) h-120 max-[912px]:h-115 pt-5 pl-10 text-lg max-[912px]:pl-1">
@@ -51,7 +29,7 @@ function Login({ logIn = () => {} }) {
           type="email"
           id="email"
           name="email"
-          value={formData.email}
+          value={email}
           onChange={handleChangeEmail}
           className="border border-black rounded-xs px-2 py-0 max-[912px]:w-60 max-[912px]:mb-1.5"
         />
@@ -60,7 +38,7 @@ function Login({ logIn = () => {} }) {
           type="password"
           id="password"
           name="password"
-          value={formData.password}
+          value={password}
           onChange={handleChangePassword}
           className="border border-black rounded-xs px-2 py-0 max-[912px]:w-60 max-[912px]:mb-1.5"
         />
