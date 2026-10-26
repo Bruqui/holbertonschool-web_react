@@ -104,9 +104,18 @@ describe('App', () => {
 
   // The drawer state lives in App, so the whole open/close round trip is
   // checked through the rendered page.
-  test('opens the notifications drawer when Your notifications is clicked', () => {
+  test('opens the notifications drawer by default', () => {
     render(<App />)
 
+    expect(
+      screen.getByText(/here is the list of notifications/i)
+    ).toBeInTheDocument()
+  })
+
+  test('reopens the notifications drawer when Your notifications is clicked', () => {
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: /close/i }))
     fireEvent.click(screen.getByText(/your notifications/i))
 
     expect(

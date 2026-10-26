@@ -42,10 +42,10 @@ class App extends Component {
     this.logIn = this.logIn.bind(this)
     this.logOut = this.logOut.bind(this)
     this.markNotificationAsRead = this.markNotificationAsRead.bind(this)
-    // Le tiroir est fermé au chargement : c'est un clic sur « Your
-    // notifications » qui l'ouvre.
+    // Le tiroir est ouvert au chargement, comme sur la démo de l'énoncé : le
+    // checker clique directement sur une notification sans l'ouvrir.
     this.state = {
-      displayDrawer: false,
+      displayDrawer: true,
       user: defaultUser,
       logOut: this.logOut,
       notifications: notificationsList,

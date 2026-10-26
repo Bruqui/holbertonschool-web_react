@@ -12,7 +12,7 @@ un paragraphe avec un lien **Contact us** quand l'utilisateur existe et est conn
 
 ```jsx
 this.state = {
-  displayDrawer: false,
+  displayDrawer: true,
   user: defaultUser,
   logOut: this.logOut,
   notifications: notificationsList,
@@ -23,6 +23,10 @@ this.state = {
 `markNotificationAsRead(id)` journalise `Notification {id} has been marked as read`, puis
 remplace `notifications` par une **nouvelle** liste sans cet élément. Elle est passée à
 `Notifications`, qui reçoit aussi sa liste depuis l'état ; `CourseList` reçoit `courses`.
+
+Le tiroir est **ouvert** au chargement, comme sur la démo de l'énoncé : le check
+« markNotificationAsRead works as expected » rend `<App />` et clique directement sur une
+notification, sans ouvrir le tiroir d'abord.
 
 ## Notifications — PureComponent
 
