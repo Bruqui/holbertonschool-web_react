@@ -6,6 +6,7 @@ logique et de l'état local.
 | Tâche | Sujet |
 | --- | --- |
 | [task_0](task_0) | Adding a local state for notifications — App ouvre et ferme le tiroir de notifications |
+| [task_1](task_1) | Controlled components and state callback — formulaire de login contrôlé, bouton activé à la validation |
 
 ## Prérequis
 
