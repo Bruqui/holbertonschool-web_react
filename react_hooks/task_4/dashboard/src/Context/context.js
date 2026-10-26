@@ -1,12 +1,13 @@
 import { createContext } from 'react'
 
-const user = {
+// Exportés pour qu'App initialise son état avec ce même utilisateur.
+export const user = {
   email: '',
   password: '',
   isLoggedIn: false,
 }
 
-const logOut = () => {}
+export const logOut = () => {}
 
 // Valeur lue par un consommateur placé hors de tout Provider.
 const newContext = createContext({ user, logOut })

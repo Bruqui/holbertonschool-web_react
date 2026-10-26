@@ -13,9 +13,10 @@ La classe `App` devient une fonction. Son objet `state` est découpé en trois h
 | `user` | `setUser` | l'utilisateur du contexte (non connecté) |
 | `notifications` | `setNotifications` | `notificationsList` |
 
-- **Utilisateur du contexte** : App lit l'utilisateur par défaut avec `useContext(newContext)`.
-  App est placé hors de son propre Provider, le hook renvoie donc la valeur par défaut. `logOut`
-  revient à cet utilisateur.
+- **Utilisateur du contexte** : `context.js` exporte `user`, l'utilisateur non connecté qui sert
+  de valeur par défaut au contexte. App l'importe comme état initial, et `logOut` y revient.
+- **Listes exportées** : `notificationsList` et `coursesList` sont exportées depuis `App.jsx`, ce
+  qui permet aux tests de comparer l'état à la liste d'origine.
 - **Callbacks mémoïsés** : `handleDisplayDrawer`, `handleHideDrawer`, `logIn`, `logOut` et
   `markNotificationAsRead` passent par `useCallback` et gardent la même référence d'un rendu à
   l'autre. C'est nécessaire, car `Notifications` ne compare pas ses callbacks.

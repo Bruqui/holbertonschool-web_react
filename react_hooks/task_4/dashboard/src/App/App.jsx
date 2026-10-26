@@ -1,4 +1,6 @@
-import { useCallback, useContext, useMemo, useState } from 'react'
+/* eslint-disable react-refresh/only-export-components --
+   les listes initiales sont exportées pour les tests, à côté du composant. */
+import { useCallback, useMemo, useState } from 'react'
 import Notifications from '../Notifications/Notifications'
 import Header from '../Header/Header'
 import Login from '../Login/Login'
@@ -6,34 +8,31 @@ import CourseList from '../CourseList/CourseList'
 import Footer from '../Footer/Footer'
 import BodySection from '../BodySection/BodySection'
 import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom'
-import newContext from '../Context/context'
+import newContext, { user as defaultUser } from '../Context/context'
 import { getLatestNotification } from '../utils/utils'
 
 // Nommé en capitale : ESLint, sans plugin React, ne reconnaît comme utilisée
 // en JSX qu'une variable qui commence par une majuscule.
 const ContextProvider = newContext.Provider
 
-const notificationsList = [
+export const notificationsList = [
   { id: 1, type: 'default', value: 'New course available' },
   { id: 2, type: 'urgent', value: 'New resume available' },
   { id: 3, type: 'urgent', html: { __html: getLatestNotification() } },
 ]
 
-const coursesList = [
+export const coursesList = [
   { id: 1, name: 'ES6', credit: 60 },
   { id: 2, name: 'Webpack', credit: 20 },
   { id: 3, name: 'React', credit: 40 },
 ]
 
 function App() {
-  // App est placé hors de son propre Provider : le hook renvoie donc la valeur
-  // par défaut du contexte, celle d'un visiteur non connecté. C'est l'état
-  // initial, et celui auquel la déconnexion revient.
-  const { user: defaultUser } = useContext(newContext)
-
   // Le tiroir est ouvert au chargement, comme sur la démo de l'énoncé : le
   // checker clique directement sur une notification sans l'ouvrir.
   const [displayDrawer, setDisplayDrawer] = useState(true)
+  // L'utilisateur du contexte : un visiteur non connecté. C'est l'état initial,
+  // et celui auquel la déconnexion revient.
   const [user, setUser] = useState(defaultUser)
   const [notifications, setNotifications] = useState(notificationsList)
 
@@ -53,7 +52,7 @@ function App() {
 
   const logOut = useCallback(() => {
     setUser(defaultUser)
-  }, [defaultUser])
+  }, [])
 
   // Une nouvelle liste plutôt qu'un retrait sur place, calculée depuis l'état
   // courant : deux clics rapprochés ne s'écrasent pas.
