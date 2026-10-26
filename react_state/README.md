@@ -9,6 +9,7 @@ logique et de l'état local.
 | [task_1](task_1) | Controlled components and state callback — formulaire de login contrôlé, bouton activé à la validation |
 | [task_2](task_2) | Context — l'utilisateur et `logOut` passent dans l'état d'App, partagés par un contexte |
 | [task_3](task_3) | Log Out implementation — le Header lit le contexte, accueille l'utilisateur et le déconnecte |
+| [task_4](task_4) | Context consumer & advanced state — lien Contact us, notifications retirées une fois lues |
 
 ## Prérequis
 
