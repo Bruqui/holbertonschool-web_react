@@ -41,16 +41,8 @@ export function appReducer(state = initialState, action) {
     case APP_ACTIONS.LOGOUT:
       return { ...state, user: loggedOutUser, courses: [] }
 
-    // Sans payload, le tiroir s'inverse. Un booléen l'ouvre (`true`) ou le
-    // ferme (`false`) quel que soit son état.
     case APP_ACTIONS.TOGGLE_DRAWER:
-      return {
-        ...state,
-        displayDrawer:
-          typeof action.payload === 'boolean'
-            ? action.payload
-            : !state.displayDrawer,
-      }
+      return { ...state, displayDrawer: !state.displayDrawer }
 
     case APP_ACTIONS.MARK_NOTIFICATION_READ:
       return {

@@ -18,7 +18,7 @@ l'état d'App passe par `useReducer`, et les enfants le reçoivent par leurs pro
 | --- | --- | --- |
 | `LOGIN` | `{ email, password }` | connecte l'utilisateur |
 | `LOGOUT` | — | revient à l'utilisateur non connecté et vide les cours |
-| `TOGGLE_DRAWER` | facultatif, booléen | sans payload, inverse le tiroir ; avec `true` ou `false`, l'ouvre ou le ferme |
+| `TOGGLE_DRAWER` | — | inverse le tiroir : ouvert, il se ferme ; fermé, il s'ouvre |
 | `MARK_NOTIFICATION_READ` | `id` | retire la notification de la liste |
 | `SET_NOTIFICATIONS` | liste | remplace les notifications |
 | `SET_COURSES` | liste | remplace les cours |
@@ -29,6 +29,9 @@ l'état d'App passe par `useReducer`, et les enfants le reçoivent par leurs pro
 - **Callbacks** : `handleDisplayDrawer`, `handleHideDrawer`, `logIn`, `logOut` et
   `markNotificationAsRead` envoient les actions correspondantes. Ils restent mémoïsés par
   `useCallback`, car `dispatch` garde la même référence.
+- **Tiroir** : comme dans la solution du staff, `handleDisplayDrawer` et `handleHideDrawer`
+  envoient tous deux `TOGGLE_DRAWER`. Un clic sur « Your notifications » referme donc un tiroir
+  déjà ouvert, et le rouvre au clic suivant.
 - **Données** : les deux effets envoient `SET_NOTIFICATIONS` et `SET_COURSES` avec les données
   reçues par axios. Leur nettoyage ignore toujours une réponse arrivée trop tard.
 - **Plus de contexte** : le Provider est retiré, et `src/Context/context.js` est supprimé.

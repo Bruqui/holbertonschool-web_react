@@ -97,12 +97,15 @@ function App() {
 
   // `dispatch` garde la même référence : les callbacks mémoïsés aussi, et
   // Notifications, qui les compare, ne se redessine pas pour rien.
+  // Comme dans la solution du staff, le titre et le bouton de fermeture font
+  // basculer le tiroir : un clic sur « Your notifications » le referme s'il
+  // est déjà ouvert.
   const handleDisplayDrawer = useCallback(() => {
-    dispatch({ type: APP_ACTIONS.TOGGLE_DRAWER, payload: true })
+    dispatch({ type: APP_ACTIONS.TOGGLE_DRAWER })
   }, [])
 
   const handleHideDrawer = useCallback(() => {
-    dispatch({ type: APP_ACTIONS.TOGGLE_DRAWER, payload: false })
+    dispatch({ type: APP_ACTIONS.TOGGLE_DRAWER })
   }, [])
 
   const logIn = useCallback((email, password) => {

@@ -199,7 +199,7 @@ describe('App', () => {
   test('closes the notifications drawer when the close button is clicked', async () => {
     await renderApp()
 
-    fireEvent.click(screen.getByText(/your notifications/i))
+    // The drawer is open on load: the close button is there right away.
     fireEvent.click(screen.getByRole('button', { name: /close/i }))
 
     expect(
@@ -210,7 +210,6 @@ describe('App', () => {
   describe('marking a notification as read', () => {
     test('removes the clicked item from the list and logs its id', async () => {
       const { container } = await renderApp()
-      fireEvent.click(screen.getByText(/your notifications/i))
 
       fireEvent.click(screen.getByText(/new course available/i))
 
@@ -225,7 +224,6 @@ describe('App', () => {
 
     test('removes only the item that was clicked, whatever its position', async () => {
       const { container } = await renderApp()
-      fireEvent.click(screen.getByText(/your notifications/i))
 
       fireEvent.click(screen.getByText(/new resume available/i))
 
@@ -242,7 +240,6 @@ describe('App', () => {
 
     test('shows the empty state once every notification is read', async () => {
       const { container } = await renderApp()
-      fireEvent.click(screen.getByText(/your notifications/i))
 
       // The first item is clicked three times over: the list shifts each time.
       for (let i = 0; i < 3; i += 1) {
@@ -279,6 +276,7 @@ describe('App', () => {
     await renderApp()
 
     await logIn()
+    fireEvent.click(screen.getByRole('button', { name: /close/i }))
     fireEvent.click(screen.getByText(/your notifications/i))
 
     expect(
@@ -371,11 +369,22 @@ describe('App', () => {
       expect(drawerIsOpen(container)).toBe(true)
     })
 
-    test('handleDisplayDrawer keeps an open drawer open', async () => {
+    // Both callbacks dispatch TOGGLE_DRAWER: the title flips the drawer too.
+    test('handleDisplayDrawer closes a drawer that is already open', async () => {
       const { container } = await renderApp()
 
       fireEvent.click(screen.getByText(/your notifications/i))
 
+      expect(drawerIsOpen(container)).toBe(false)
+    })
+
+    test('the title alone opens and closes the drawer in turn', async () => {
+      const { container } = await renderApp()
+      const title = screen.getByText(/your notifications/i)
+
+      fireEvent.click(title)
+      expect(drawerIsOpen(container)).toBe(false)
+      fireEvent.click(title)
       expect(drawerIsOpen(container)).toBe(true)
     })
 
