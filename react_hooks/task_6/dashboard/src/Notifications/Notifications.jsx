@@ -36,7 +36,7 @@ function Notifications({
         // masque la page.
         <div className="notification-items border-[3px] border-dotted border-(--main-color) p-2 max-[912px]:fixed max-[912px]:inset-0 max-[912px]:z-50 max-[912px]:overflow-auto max-[912px]:bg-white max-[912px]:p-3">
           {notifications.length === 0 ? (
-            <p className="max-[912px]:text-xl">No new notification for now</p>
+            <p className="max-[912px]:text-xl">No new notifications for now</p>
           ) : (
             <>
               <button

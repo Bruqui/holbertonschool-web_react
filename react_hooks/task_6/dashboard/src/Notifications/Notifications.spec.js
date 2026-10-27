@@ -317,11 +317,11 @@ describe('Notifications', () => {
   })
 
   describe('when displayDrawer is true and notifications is empty', () => {
-    test('renders the text No new notification for now', () => {
+    test('renders the text No new notifications for now', () => {
       render(<Notifications displayDrawer notifications={[]} />)
 
       expect(
-        screen.getByText(/no new notification for now/i)
+        screen.getByText(/no new notifications for now/i)
       ).toBeInTheDocument()
     })
 
@@ -343,7 +343,7 @@ describe('Notifications', () => {
       render(<Notifications displayDrawer />)
 
       expect(
-        screen.getByText(/no new notification for now/i)
+        screen.getByText(/no new notifications for now/i)
       ).toBeInTheDocument()
     })
   })

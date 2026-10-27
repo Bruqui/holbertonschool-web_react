@@ -247,7 +247,7 @@ describe('App', () => {
       }
 
       expect(
-        screen.getByText(/no new notification for now/i)
+        screen.getByText(/no new notifications for now/i)
       ).toBeInTheDocument()
     })
   })
@@ -378,6 +378,17 @@ describe('App', () => {
       expect(drawerIsOpen(container)).toBe(false)
     })
 
+    test('toggles the empty drawer before the server has answered', () => {
+      render(<App />)
+      const title = screen.getByText(/your notifications/i)
+
+      expect(screen.getByText(/no new notifications for now/i)).toBeInTheDocument()
+      fireEvent.click(title)
+      expect(screen.queryByText(/no new notifications for now/i)).toBeNull()
+      fireEvent.click(title)
+      expect(screen.getByText(/no new notifications for now/i)).toBeInTheDocument()
+    })
+
     test('the title alone opens and closes the drawer in turn', async () => {
       const { container } = await renderApp()
       const title = screen.getByText(/your notifications/i)
@@ -474,7 +485,7 @@ describe('App', () => {
       render(<App />)
 
       expect(
-        screen.getByText(/no new notification for now/i)
+        screen.getByText(/no new notifications for now/i)
       ).toBeInTheDocument()
     })
 
@@ -521,7 +532,7 @@ describe('App', () => {
         expect.any(Error)
       )
       expect(
-        screen.getByText(/no new notification for now/i)
+        screen.getByText(/no new notifications for now/i)
       ).toBeInTheDocument()
     })
 

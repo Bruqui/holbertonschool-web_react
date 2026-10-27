@@ -32,6 +32,8 @@ l'état d'App passe par `useReducer`, et les enfants le reçoivent par leurs pro
 - **Tiroir** : comme dans la solution du staff, `handleDisplayDrawer` et `handleHideDrawer`
   envoient tous deux `TOGGLE_DRAWER`. Un clic sur « Your notifications » referme donc un tiroir
   déjà ouvert, et le rouvre au clic suivant.
+- **Tiroir vide** : tant que le serveur n'a pas répondu, ou une fois tout lu, le tiroir affiche
+  « No new notifications for now », au pluriel comme dans la solution du staff.
 - **Données** : les deux effets envoient `SET_NOTIFICATIONS` et `SET_COURSES` avec les données
   reçues par axios. Leur nettoyage ignore toujours une réponse arrivée trop tard.
 - **Plus de contexte** : le Provider est retiré, et `src/Context/context.js` est supprimé.
