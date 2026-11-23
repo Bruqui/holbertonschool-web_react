@@ -30,8 +30,7 @@ const styles = StyleSheet.create({
 
 export default function Header() {
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const user = useSelector((state) => state.auth.user);
+  const { isLoggedIn, user } = useSelector((state) => state.auth);
 
   const handleLogout = () => {
     dispatch(logout());
